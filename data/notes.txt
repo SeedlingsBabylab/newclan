@@ -1,1 +1,4 @@
 *OLN:	pieces &=n_y_BR candy &=n_y_BR . 5277470_5278300
+
+
+*NOF:	barber &=r_y_MOT baby &=r_y_MOT bubbles &=r_y_MOT bumblebee &=r_y_MOT . 13060030_13061240

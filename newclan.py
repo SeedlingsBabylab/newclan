@@ -40,14 +40,15 @@ class ClanFile:
 
         self.comments = []
 
-        re1='((?:[a-z][a-z]+))' # the word
+        #re1='((?:[a-z][a-z]+))' # the word
+        re1='((?:[a-z][a-z0-9_]*))' # the word
         re2='(\\s+)'	        # whitespace
         re3='(&)'	            # &
         re4='(.)'	            # utterance_type
         re5='(\\|)'	            # |
         re6='(.)'	            # object_present
         re7='(\\|)'	            # |
-        re8='((?:[a-z][a-z]*[0-9]+[a-z0-9]*))' # speaker
+        re8='((?:[a-z][a-z0-9_]*))' # speaker
 
         self.entry_regx = re.compile(re1+re2+re3+re4+re5+re6+re7+re8, re.IGNORECASE | re.DOTALL)
         self.interval_regx = re.compile("(\d+_\d{3,})")
@@ -102,9 +103,7 @@ class ClanFile:
                     curr_interval[1] = int(interval[1])
 
                 # this is for lines that wrapped around past a single line
-                if not (line.startswith("*") or\
-                        line.startswith("@") or\
-                        line.startswith("%com:")):
+                if (line.startswith("\t")):
                     line = last_line + line
 
                 # if there are "word &=d_y_BRO" entries within the line, parse them out
@@ -145,12 +144,16 @@ class ClanFile:
         with open(self.its_path, "rU") as its_file:
             with open(self.out_path, "w") as output:
                 for index, line in enumerate(its_file):
-                    if line.startswith("@"):
+                    # we skip over the birth date header
+                    if line.startswith("@Birth"):
+                        continue
+                    # we just write out all the other headers
+                    elif line.startswith("@"):
                         output.write(line)
-                    # if line.startswith("@Participants"):
-                    #     output.write(participants)
+                    # we write out all the clan/lena comments
                     elif line.startswith("%com:") and ("|" in line):
                         output.write(line)
+                    # we write out all the decibel comments
                     elif line.startswith("%xdb:"):
                         output.write(line)
                     elif line.startswith("*"):
@@ -183,6 +186,10 @@ class ClanFile:
                             if "&=crying" in line:
                                 output.write("&=crying ")
 
+                            word_count_reg_result = self.word_cnt_regx.search(line)
+                            if word_count_reg_result:
+                                output.write(word_count_reg_result.group()+ " ")
+
                             # write all our entries for this interval
                             for entry in words:
                                 output.write(entry[0] + " &={}_{}_{} ".format(entry[1], entry[2], entry[3]))
@@ -203,12 +210,10 @@ class ClanFile:
                         # if there is no other interval on the line, just write
                         # it out to the output .cha
                         if interval_regx_result is None:
-                            print "multi line with no interval: line#: " + str(index)
                             output.write(line)
                         else:   # this is part of a multi line entry (with multiple intervals)
                             interval_str = interval_regx_result.group()
                             interval = interval_str.split("_")
-                            print "multi line interval: " + str(interval)
                             curr_interval[0] = int(interval[0])
                             curr_interval[1] = int(interval[1])
 
@@ -230,8 +235,11 @@ class ClanFile:
                                     output.write(entry[0] + " &={}_{}_{} ".format(entry[1],
                                                                                   entry[2],
                                                                                   entry[3]))
+                                if "." not in line:
+                                    output.write(line_split[-1] + "\n")
+                                else:
+                                    output.write(". " + line_split[-1] + "\n")
 
-                                output.write(". " + line_split[-1] + "\n")
                                 if grouped_words:
                                     words = grouped_words.popleft()
                             else:
