@@ -26,6 +26,8 @@ ids = ["@ID:\teng|LENA|SIL|||||LENA||Silence|",
         "@ID:\teng|LENA|TVF|||||Media||Electronic_Sound_Far|"
     ]
 
+
+
 class ClanFile:
     def __init__(self, clan_path, its_path, out_path):
         self.path = clan_path
@@ -36,6 +38,8 @@ class ClanFile:
         self.words = []     # list of (word, interval) tuples
         self.grouped_words = None
 
+        self.comments = []
+
         re1='((?:[a-z][a-z]+))' # the word
         re2='(\\s+)'	        # whitespace
         re3='(&)'	            # &
@@ -43,60 +47,22 @@ class ClanFile:
         re5='(\\|)'	            # |
         re6='(.)'	            # object_present
         re7='(\\|)'	            # |
-        re8='((?:[a-z][a-z]+))' # speaker
+        re8='((?:[a-z][a-z]*[0-9]+[a-z0-9]*))' # speaker
 
         self.entry_regx = re.compile(re1+re2+re3+re4+re5+re6+re7+re8, re.IGNORECASE | re.DOTALL)
         self.interval_regx = re.compile("(\d+_\d{3,})")
 
+        re9='(&)'	# Any Single Character 1
+        re10='(=)'	# Any Single Character 2
+        re11='(w)'	# Any Single Character 3
+        re12='(\\d+)'	# Integer Number 1
+        re13='(_)'	# Any Single Character 4
+        re14='(\\d+)'	# Integer Number 2
+
+        self.word_cnt_regx = re.compile(re9+re10+re11+re12+re13+re14,re.IGNORECASE|re.DOTALL)
+
         self.parse_clan_words_comments()
         self.merge_its_and_clan()
-
-    def parse_clan(self):
-
-        with open(self.path, "rU") as input_file:
-            with open(self.out_path, "w") as output_file:
-                output_file.write("@UTF8\n")
-                output_file.write("@Begin\n")
-                output_file.write("@Languages:\teng\n")
-                output_file.write(participants)
-                output_file.write("\n@Options:\tmulti\n")
-                for id in ids:
-                    output_file.write(id + "\n")
-                media = os.path.split(self.path)[1][0:5]
-                output_file.write("@Media:\t{}, audio".format(media))
-
-                prev_line = ""
-                for line in input_file:
-                    if line.startswith("@New Episode:"):
-                        output_file.write("\n" + line.replace("@New Episode:", "@Comment:"))
-
-                    if line.startswith("*"):
-                        line_split = line.split()
-
-                        if len(line_split) == 2:    # empty
-                            output_file.write(line_split[0] + "\t" + "0. " + line_split[1] + "\n")
-
-                        entries = re.findall(self.entry_regx, line)
-                        print entries
-
-                        if entries:
-                            output_file.write(line_split[0] + "\t")
-                            for index, entry in enumerate(entries):
-                                output_file.write(entry[0] + " &={}_{}_{}".format(entry[3], entry[5], entry[7] + " "))
-                            output_file.write(". ")
-                            output_file.write(line_split[-1] + "\n")
-                        else:
-                            output_file.write(line)
-                        # if len(line_split) == 4:    #
-                        #     output_file.write(line_split[0] + "\t" + line_split)
-
-                    if line.startswith("%com:") and\
-                        ("silence" not in line and "subregion" not in line):
-                        output_file.write(line)
-
-                    prev_line = line
-
-                output_file.write("@End")
 
     def parse_clan_words_comments(self):
         """
@@ -121,17 +87,24 @@ class ClanFile:
                     # it must be on a following line. We save the previous
                     # line and move forward
                     if interval_reg_result is None:
-                        print "interval regex was none"
+                        print "interval regex was none, clan line: " + str(index)
                         last_line = line
                         continue
 
+                    # rearrange previous and current intervals
+                    prev_interval[0] = curr_interval[0]
+                    prev_interval[1] = curr_interval[1]
+
+                    # set the new curr_interval
                     interval_str = interval_reg_result.group()
                     interval = interval_str.split("_")
                     curr_interval[0] = int(interval[0])
                     curr_interval[1] = int(interval[1])
 
                 # this is for lines that wrapped around past a single line
-                if not (line.startswith("*") or line.startswith("@")):
+                if not (line.startswith("*") or\
+                        line.startswith("@") or\
+                        line.startswith("%com:")):
                     line = last_line + line
 
                 # if there are "word &=d_y_BRO" entries within the line, parse them out
@@ -147,53 +120,122 @@ class ClanFile:
                                            curr_interval[0],    # onset
                                            curr_interval[1]))   # offset
 
-                # if line.startswith("%com:") and ("|" not in line):
 
+                if line.startswith("%com:") and ("|" not in line):
+                    self.comments.append((line, curr_interval[0], curr_interval[1]))
 
         print self.words
         self.grouped_words = self.chunk_words(self.words)
         print self.grouped_words
+        print self.comments
 
     def merge_its_and_clan(self):
 
         grouped_words = collections.deque(self.grouped_words)
         words = grouped_words.popleft()
 
+        comments = collections.deque(self.comments)
+        comment = comments.popleft()
+
         curr_interval = [None, None]
         prev_interval = [None, None]
 
+        prev_line = ""
+
         with open(self.its_path, "rU") as its_file:
             with open(self.out_path, "w") as output:
-                for line in its_file:
+                for index, line in enumerate(its_file):
                     if line.startswith("@"):
                         output.write(line)
                     # if line.startswith("@Participants"):
                     #     output.write(participants)
                     elif line.startswith("%com:") and ("|" in line):
                         output.write(line)
+                    elif line.startswith("%xdb:"):
+                        output.write(line)
                     elif line.startswith("*"):
                         line_split = line.split()
 
-                        # parse out the line interval
+                        # rearrange previous and current intervals
+                        prev_interval[0] = curr_interval[0]
+                        prev_interval[1] = curr_interval[1]
+
+                        # parse out the new current line interval and set it
                         interval_str = self.interval_regx.search(line).group()
                         interval = interval_str.split("_")
                         curr_interval[0] = int(interval[0])
                         curr_interval[1] = int(interval[1])
 
+                        # if curr_interval[0] == comment[1]:
+                        #
+                        #
                         if curr_interval[0] == words[0][4] and\
                             curr_interval[1] == words[0][5]:
 
                             output.write(line_split[0] + "\t")
+
+                            # write back all the special codes before writing our
+                            # own annotations
+                            if "&=vocalization" in line:
+                                output.write("&=vocalization ")
+                            if "&=vfx" in line:
+                                output.write("&=vfx ")
+                            if "&=crying" in line:
+                                output.write("&=crying ")
+
+                            # write all our entries for this interval
                             for entry in words:
                                 output.write(entry[0] + " &={}_{}_{} ".format(entry[1], entry[2], entry[3]))
 
-                            output.write(". " + line_split[-1] + "\n")
-                            words = grouped_words.popleft()
+                            if "." not in line:
+                                output.write(line_split[-1] + "\n")
+                            else:
+                                output.write(". " + line_split[-1] + "\n")
+                            if grouped_words:
+                                words = grouped_words.popleft()
                         else:
                             output.write(line)
-                    elif not (line.startswith("*") or\
-                           line.startswith("@")):
-                        output.write(line)
+                    elif line.startswith("\t"):
+                        line_split = line.split()
+
+                        interval_regx_result = self.interval_regx.search(line)
+
+                        # if there is no other interval on the line, just write
+                        # it out to the output .cha
+                        if interval_regx_result is None:
+                            print "multi line with no interval: line#: " + str(index)
+                            output.write(line)
+                        else:   # this is part of a multi line entry (with multiple intervals)
+                            interval_str = interval_regx_result.group()
+                            interval = interval_str.split("_")
+                            print "multi line interval: " + str(interval)
+                            curr_interval[0] = int(interval[0])
+                            curr_interval[1] = int(interval[1])
+
+                            if curr_interval[0] == words[0][4] and\
+                               curr_interval[1] == words[0][5]:
+
+                                output.write("\t")
+
+                                # write back all the special codes before writing our
+                                # own annotations
+                                if "&=vocalization" in line:
+                                    output.write("&=vocalization ")
+                                if "&=vfx" in line:
+                                    output.write("&=vfx ")
+                                if "&=crying" in line:
+                                    output.write("&=crying ")
+
+                                for entry in words:
+                                    output.write(entry[0] + " &={}_{}_{} ".format(entry[1],
+                                                                                  entry[2],
+                                                                                  entry[3]))
+
+                                output.write(". " + line_split[-1] + "\n")
+                                if grouped_words:
+                                    words = grouped_words.popleft()
+                            else:
+                                output.write(line)
 
     def chunk_words(self, words):
         """
@@ -227,6 +269,7 @@ class ClanFile:
                 temp_group.append(word)
 
         return result
+
 class ITSFile:
 
     def __init__(self, its_path, clan_path):
@@ -242,6 +285,8 @@ class ITSFile:
 def print_usage():
     print "USAGE: \n"
     print "python newclan.py input_clan its_file output"
+
+
 
 if __name__ == "__main__":
 
