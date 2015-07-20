@@ -409,7 +409,8 @@
 *CXN:	0 . 4498010_4499360
 %com:	|RC|7|4|3|AICF|NT|FI|
 %xdb:	average_dB="-24.44" peak_dB="-14.83"
-*SIL:	0 . 4499360_4500170
+*SIL:	0 . 4499360_4500000
+%xcom:	subregion 1 of 5 starts at 4500000 -- previous timestamp adjusted: was 4500170
 %xdb:	average_dB="-52.97" peak_dB="-39.65"
 *FAN:	&=w0_00 . 4500170_4500770
 %xdb:	average_dB="-31.91" peak_dB="-20.75"
@@ -1467,6 +1468,7 @@
 *OLN:	0 . 4987110_4987910
 %xdb:	average_dB="-21.30" peak_dB="-9.65"
 *CXN:	paci &=q_y_SIS . 4987910_4988910
+%xcom:	a bit hard to understand the word
 %com:	|EC|21|30|1|AICF|NT|FI|
 %xdb:	average_dB="-19.78" peak_dB="-11.69"
 @Eg:	Conversation 21
@@ -2404,7 +2406,7 @@
 *FAN:	&=w8_34 . 5447450_5448930
 %com:	|RC|41|53|2|AICF|NT|FH|
 %xdb:	average_dB="-19.18" peak_dB="-10.65"
-*CXN:	family &=s_n_BR2 . 5448930_5449730
+*CXN:	tiger+family &=s_n_BR2 . 5448930_5449730
 %com:	|RC|41|53|2|AICF|NT|FI|
 %xdb:	average_dB="-25.01" peak_dB="-19.03"
 *OLN:	0 . 5449730_5450950
@@ -2713,7 +2715,7 @@
 %xdb:	average_dB="-25.81" peak_dB="-13.05"
 *OLN:	driveway &=d_n_MOT . 5587140_5587940
 %xdb:	average_dB="-23.12" peak_dB="-15.88"
-*FAN:	&=w4_33 puddle &=d_n_MOT . 5587940_5589050
+*FAN:	&=w4_33 mud+puddle &=d_n_MOT . 5587940_5589050
 %com:	|EC|46|63|3|CIC|TIFR|FI|
 %xdb:	average_dB="-26.19" peak_dB="-16.78"
 @Eg:	Conversation 46
@@ -2815,12 +2817,12 @@
 %xdb:	average_dB="-44.56" peak_dB="-27.36"
 *SIL:	0 . 5634090_5635190
 %xdb:	average_dB="-46.71" peak_dB="-36.70"
-*FAN:	&=w4_72 Sun &=s_n_MOT . 5635190_5636400
+*FAN:	&=w4_72 Mr+sun &=s_n_MOT . 5635190_5636400
 %com:	|RC|48|66|2|AICF|TIFE|FI|
 %xdb:	average_dB="-34.49" peak_dB="-20.94"
 *FAF:	sun &=s_n_MOT . 5636400_5637200
 %xdb:	average_dB="-42.27" peak_dB="-34.57"
-*FAN:	&=w9_92 Sun &=s_n_MOT . 5637200_5641030
+*FAN:	&=w9_92 Mr+golden+sun &=s_n_MOT . 5637200_5641030
 %com:	|RC|48|66|2|AICF|NT|FH|
 %xdb:	average_dB="-26.46" peak_dB="-17.03"
 *OLN:	0 . 5641030_5641830
@@ -2829,12 +2831,12 @@
 %xdb:	average_dB="-23.30" peak_dB="-19.83"
 *OLN:	0 . 5642430_5643230
 %xdb:	average_dB="-26.61" peak_dB="-12.18"
-*FAN:	&=w3_86 Sun &=s_n_MOT . 5643230_5644230
+*FAN:	&=w3_86 Mr+sun &=s_n_MOT . 5643230_5644230
 %com:	|RC|48|66|2|AICF|TIFI|FH|
 %xdb:	average_dB="-29.07" peak_dB="-20.58"
 *OLN:	0 . 5644230_5645030
 %xdb:	average_dB="-30.99" peak_dB="-18.25"
-*FAF:	sun &=s_n_MOT Sun &=s_n_MOT . 5645030_5646090
+*FAF:	sun &=s_n_MOT Mr+golden+sun &=s_n_MOT . 5645030_5646090
 %xdb:	average_dB="-29.04" peak_dB="-15.37"
 *CHN:	0 5646090_5646260
 	&=vocalization . 5646260_5646760
@@ -3798,7 +3800,8 @@
 %xdb:	average_dB="-25.90" peak_dB="-20.18"
 @Eg:	Pause 62
 @Bg:	Conversation 62
-*FAN:	&=w7_05 diapering &=d_n_MOT . 6096650_6098450
+*FAN:	&=w7_05 cloth+diapering &=d_n_MOT . 6096650_6098450
+%xcom:	verb as object
 %com:	|BC|62|73|0|AMF|NT|FI|
 %xdb:	average_dB="-20.81" peak_dB="-8.94"
 *NOF:	0 . 6098450_6099720
@@ -3897,6 +3900,7 @@
 *OLN:	0 . 6149800_6151050
 %xdb:	average_dB="-19.69" peak_dB="-8.65"
 *FAN:	&=w5_82 holes &=d_n_MOT knees &=d_n_MOT . 6151050_6152050
+%xcom:	knees refers to knees of jeans
 %com:	|EC|65|73|0|AMF|NT|FH|
 %xdb:	average_dB="-22.92" peak_dB="-10.16"
 @Eg:	Conversation 65
@@ -4660,11 +4664,11 @@
 	0 . 6501970_6502090
 %com:	|RC|78|85|3|CIC|TIFR|FI|
 %xdb:	average_dB="-18.33" peak_dB="-9.86"
-*FAN:	&=w8_29 button &=d_n_BR2 . 6502090_6503480
+*FAN:	&=w8_29 belly+button &=d_n_BR2 . 6502090_6503480
 %com:	|RC|78|85|3|CIC|TIFI|FI|
 %xdb:	average_dB="-17.61" peak_dB="-8.05"
 *CHN:	0 6503480_6503570
-	&=crying button &=d_n_BR2 . 6503570_6504220
+	&=crying belly+button &=d_n_BR2 . 6503570_6504220
 %xdb:	average_dB="-15.83" peak_dB="-8.71"
 *CHN:	&=crying 6504220_6505430
 	&=vfx . 6505430_6505730
@@ -4736,7 +4740,7 @@
 *CXN:	0 . 6531230_6532030
 %com:	|RC|79|86|0|AIOCCXF|NT|FH|
 %xdb:	average_dB="-39.91" peak_dB="-34.82"
-*CHN:	&=crying button &=n_y_BR2 6532030_6532430
+*CHN:	&=crying belly+button &=n_y_BR2 6532030_6532430
 	&=crying . 6532620_6533090
 %xdb:	average_dB="-18.95" peak_dB="-11.41"
 *CHN:	&=crying . 6533090_6533700
@@ -5568,6 +5572,7 @@
 %com:	|RC|90|108|5|AICF|TIFI|FI|
 %xdb:	average_dB="-15.61" peak_dB="-11.95"
 *FAN:	&=w10_86 man &=s_n_BR2 . 6904490_6907530
+%xcom:	double check but i think we skip man
 %com:	|RC|90|109|6|AICF|TIFR|FI|
 %xdb:	average_dB="-22.30" peak_dB="-10.65"
 *FAN:	&=w3_01 . 6907530_6908140
@@ -5826,10 +5831,10 @@
 	0 . 7024240_7024350
 %com:	|RC|92|112|0|AICF|NT|FI|
 %xdb:	average_dB="-14.23" peak_dB="-8.31"
-*CXN:	girl &=d_n_MOT . 7024350_7025150
+*CXN:	Powerpuff+girl &=d_n_MOT . 7024350_7025150
 %com:	|RC|92|112|0|AICF|NT|FI|
 %xdb:	average_dB="-25.58" peak_dB="-17.82"
-*FAN:	&=w6_91 girl &=q_n_MOT . 7025150_7026160
+*FAN:	&=w6_91 Powerpuff+girl &=q_n_MOT . 7025150_7026160
 %com:	|RC|92|112|0|AICF|TIFI|FI|
 %xdb:	average_dB="-26.02" peak_dB="-17.04"
 *OLN:	0 . 7026160_7027130
@@ -5859,6 +5864,7 @@
 %com:	|RC|92|114|2|AICF|NT|FH|
 %xdb:	average_dB="-12.79" peak_dB="-7.73"
 *CHN:	&=vocalization bunk &=d_n_SIS 7038010_7038690
+%xcom:	refers to bottom bunk bed
 	0 . 7038690_7039010
 %com:	|RC|92|114|2|AICF|NT|FH|
 %xdb:	average_dB="-15.24" peak_dB="-9.60"
@@ -5954,7 +5960,7 @@
 %xdb:	average_dB="-52.14" peak_dB="-37.34"
 @Eg:	Pause 95
 @Bg:	Conversation 95
-*CXN:	balloon &=d_y_SIB . 7087410_7089490
+*CXN:	water+balloon &=d_y_SIB . 7087410_7089490
 %com:	|BC|95|115|0|XIOCA|NT|FI|
 %xdb:	average_dB="-25.52" peak_dB="-16.72"
 *SIL:	0 . 7089490_7090300
@@ -6353,9 +6359,9 @@
 %xdb:	average_dB="-18.24" peak_dB="-10.18"
 *SIL:	0 . 7268200_7269710
 %xdb:	average_dB="-51.51" peak_dB="-43.79"
-*NOF:	wing &=s_n_SIS . 7269710_7270510
+*NOF:	chicken+wing &=s_n_SIS . 7269710_7270510
 %xdb:	average_dB="-28.35" peak_dB="-16.62"
-*CHN:	&=vocalization wing &=s_n_SIS dog &=s_n_SIS . 7270510_7272270
+*CHN:	&=vocalization chicken+wing &=s_n_SIS hot+dog &=s_n_SIS . 7270510_7272270
 %com:	|RC|105|120|2|CIC|TIFR|FI|
 %xdb:	average_dB="-15.98" peak_dB="-7.38"
 *CXN:	bologna &=s_n_SIS . 7272270_7274300
@@ -7055,7 +7061,7 @@
 	&=vocalization . 7605220_7605720
 %com:	|RC|116|131|4|AICF|TIFR|FI|
 %xdb:	average_dB="-13.94" peak_dB="-8.12"
-*CHN:	&=vocalization thing &=q_y_BR1 . 7605720_7606840
+*CHN:	&=vocalization speaker+thing &=q_y_BR1 . 7605720_7606840
 %com:	|RC|116|131|4|AICF|NT|FH|
 %xdb:	average_dB="-15.55" peak_dB="-8.75"
 *OLF:	0 . 7606840_7607720
@@ -7322,7 +7328,8 @@
 %xdb:	average_dB="-48.79" peak_dB="-37.54"
 *OLN:	0 . 7739720_7741720
 %xdb:	average_dB="-28.03" peak_dB="-18.03"
-*FAN:	&=w6_24 stuff &=d_n_BR1 . 7741720_7743100
+*FAN:	&=w6_24 egg+stuff &=d_n_BR1 . 7741720_7743100
+%xcom:	referring to mayo
 %com:	|RC|122|134|0|AIOCF|NT|FI|
 %xdb:	average_dB="-26.41" peak_dB="-16.73"
 *NOF:	0 . 7743100_7744820
@@ -7743,7 +7750,7 @@
 *CXN:	0 . 7952690_7953950
 %com:	|RC|128|139|0|XIC|NT|FI|
 %xdb:	average_dB="-24.89" peak_dB="-13.52"
-*FAN:	&=w7_34 cheese &=d_n_MOT . 7953950_7955800
+*FAN:	&=w7_34 swiss+cheese &=d_n_MOT . 7953950_7955800
 %com:	|RC|128|139|0|XIC|NT|FI|
 %xdb:	average_dB="-28.74" peak_dB="-19.17"
 *OLF:	0 . 7955800_7957890
@@ -7770,7 +7777,7 @@
 *CXN:	0 . 7967850_7968650
 %com:	|RC|128|139|0|XIC|NT|FI|
 %xdb:	average_dB="-27.37" peak_dB="-22.38"
-*OLN:	cheese &=n_y_BR1 cheese &=n_y_MOT . 7968650_7971720
+*OLN:	swiss+cheese &=n_y_BR1 swiss+cheese &=n_y_MOT . 7968650_7971720
 %xdb:	average_dB="-23.32" peak_dB="-9.68"
 *CXN:	0 . 7971720_7973660
 %com:	|RC|128|139|0|XIC|NT|FH|
@@ -7811,7 +7818,7 @@
 %xdb:	average_dB="-41.31" peak_dB="-27.88"
 *OLN:	0 . 7993330_7994190
 %xdb:	average_dB="-24.33" peak_dB="-10.76"
-*FAN:	&=w4_12 towels &=q_n_MOT . 7994190_7995190
+*FAN:	&=w4_12 paper+towels &=q_n_MOT . 7994190_7995190
 %com:	|RC|128|139|0|XIC|NT|FI|
 %xdb:	average_dB="-26.77" peak_dB="-19.54"
 *NOF:	0 . 7995190_7995990
@@ -8008,11 +8015,12 @@
 %xdb:	average_dB="-47.12" peak_dB="-38.76"
 *NOF:	0 . 8094690_8096370
 %xdb:	average_dB="-39.89" peak_dB="-25.64"
-*OLN:	towels &=n_y_BR1 . 8096370_8097630
+*OLN:	paper+towels &=n_y_BR1 . 8096370_8097630
 %xdb:	average_dB="-22.57" peak_dB="-11.06"
 *FAN:	&=w0 . 8097630_8098690
 %xdb:	average_dB="-29.12" peak_dB="-21.30"
-*OLF:	0 . 8098690_8100830
+*OLF:	0 . 8098690_8100000
+%xcom:	subregion 1 of 5 ends at 8100000 -- previous timestamp adjusted: was 8100830
 %xdb:	average_dB="-31.52" peak_dB="-11.01"
 @Eg:	Pause 132
 @Bg:	Conversation 132
@@ -12784,7 +12792,8 @@
 *CXN:	0 . 10499040_10499640
 %com:	|RC|220|182|0|XIC|NT|FH|
 %xdb:	average_dB="-21.13" peak_dB="-15.95"
-*OLN:	0 . 10499640_10500440
+*OLN:	0 . 10499640_10500000
+%xcom:	subregion 2 of 5 starts at 10500000 -- previous timestamp adjusted: was 10500440 [contains silent region: [14066750.0, 19239031.579] ]
 %xdb:	average_dB="-24.30" peak_dB="-12.86"
 *CHN:	&=crying . 10500440_10501280
 %xdb:	average_dB="-22.15" peak_dB="-13.47"
@@ -13795,6 +13804,7 @@
 *SIL:	0 . 10972080_10972880
 %xdb:	average_dB="-46.93" peak_dB="-29.91"
 *FAF:	child &=d_y_TVN . 10972880_10974740
+%xcom:	double check if we're including child
 %xdb:	average_dB="-37.45" peak_dB="-22.90"
 *SIL:	0 . 10974740_10975560
 %xdb:	average_dB="-50.23" peak_dB="-33.00"
@@ -13958,7 +13968,7 @@
 @Bg:	Pause 252
 *SIL:	0 . 11048430_11049890
 %xdb:	average_dB="-45.56" peak_dB="-29.60"
-*FAF:	dogs &=d_y_TVN . 11049890_11051630
+*FAF:	hot+dogs &=d_y_TVN . 11049890_11051630
 %xdb:	average_dB="-37.73" peak_dB="-19.31"
 *SIL:	0 . 11051630_11052660
 %xdb:	average_dB="-43.71" peak_dB="-27.02"
@@ -14943,7 +14953,7 @@
 %xdb:	average_dB="-40.08" peak_dB="-32.24"
 @Eg:	Conversation 275
 @Bg:	Pause 276
-*MAF:	cream &=d_y_TVN . 11583520_11584790
+*MAF:	ice+cream &=d_y_TVN . 11583520_11584790
 %xdb:	average_dB="-40.20" peak_dB="-32.60"
 *NOF:	0 . 11584790_11585670
 %xdb:	average_dB="-40.84" peak_dB="-28.42"
@@ -15110,6 +15120,7 @@
 @Eg:	Pause 281
 @Bg:	Conversation 281
 *FAN:	&=w1_16 drink &=n_n_SIS . 11672710_11673310
+%xcom:	verb as object
 %com:	|EC|281|197|0|AMF|NT|FI|
 %xdb:	average_dB="-36.68" peak_dB="-28.47"
 @Eg:	Conversation 281
@@ -16634,6 +16645,7 @@
 %com:	|RC|315|208|1|XIC|TIFE|FI|
 %xdb:	average_dB="-15.77" peak_dB="-10.50"
 *FAN:	&=w8_18 Shopkins &=d_y_SIS . 12474560_12476350
+%xcom:	some tv show/ toy thing
 %com:	|RC|315|208|1|XIC|NT|FH|
 %xdb:	average_dB="-23.76" peak_dB="-13.95"
 *SIL:	0 . 12476350_12477150
@@ -16773,7 +16785,7 @@
 *MAF:	0 . 12538770_12539860
 %xdb:	average_dB="-35.85" peak_dB="-22.37"
 *CHN:	0 12539860_12540510
-	&=crying Shopkin &=n_y_SIS . 12540510_12542150
+	&=crying Shoppy+shoppy+shopkin &=n_y_SIS . 12540510_12542150
 %xdb:	average_dB="-18.53" peak_dB="-7.91"
 *NOF:	0 . 12542150_12546470
 %xdb:	average_dB="-28.91" peak_dB="-11.55"
@@ -17302,7 +17314,8 @@
 %xdb:	average_dB="-17.50" peak_dB="-10.41"
 *CHN:	0 12798350_12798470
 	&=vocalization 12798470_12801140
-	&=vocalization Shop &=s_n_SIS . 12801590_12802500
+	&=vocalization Littlest+pet+shop &=s_n_SIS . 12801590_12802500
+%xcom:	name of toys
 %com:	|RC|328|215|2|CIC|NT|FH|
 %xdb:	average_dB="-17.13" peak_dB="-10.11"
 *CHN:	&=vocalization . 12802500_12803500
@@ -17427,7 +17440,7 @@
 *CXN:	0 . 12856060_12857420
 %com:	|RC|330|216|1|AICF|NT|FH|
 %xdb:	average_dB="-28.26" peak_dB="-19.81"
-*OLN:	Shop &=s_n_SIS . 12857420_12858220
+*OLN:	Littlest+pet+shop &=s_n_SIS . 12857420_12858220
 %xdb:	average_dB="-18.52" peak_dB="-9.51"
 *CXN:	0 . 12858220_12859760
 %com:	|RC|330|216|1|AICF|NT|FH|
@@ -17452,7 +17465,7 @@
 *CXN:	0 . 12868450_12869370
 %com:	|BC|331|216|0|XM|NT|FI|
 %xdb:	average_dB="-28.09" peak_dB="-18.65"
-*CXN:	Shop &=s_n_SIS . 12869370_12870010
+*CXN:	Littlest+pet+shop &=s_n_SIS . 12869370_12870010
 %com:	|RC|331|216|0|XM|NT|FH|
 %xdb:	average_dB="-21.36" peak_dB="-14.90"
 *CXN:	0 . 12870010_12871840
@@ -17700,7 +17713,7 @@
 %xdb:	average_dB="-18.07" peak_dB="-12.92"
 *NOF:	0 . 12997500_12998390
 %xdb:	average_dB="-39.70" peak_dB="-29.32"
-*FAN:	&=w2_51 creatures &=q_n_MOT . 12998390_12999530
+*FAN:	&=w2_51 Littlest+pet+shop+creatures &=q_n_MOT . 12998390_12999530
 %com:	|RC|336|219|3|AICF|TIFR|FI|
 %xdb:	average_dB="-19.24" peak_dB="-11.85"
 *OLN:	0 . 12999530_13002590
@@ -17799,7 +17812,8 @@
 %xdb:	average_dB="-41.64" peak_dB="-36.19"
 @Eg:	Pause 337
 @Bg:	Conversation 337
-*FAN:	&=w5_88 C &=r_y_MOT . 13047610_13049380
+*FAN:	&=w5_88 A+b+c &=r_y_MOT . 13047610_13049380
+%xcom:	name of book
 %com:	|BC|337|219|0|AICF|NT|FI|
 %xdb:	average_dB="-25.27" peak_dB="-19.25"
 *SIL:	0 . 13049380_13050680
@@ -17835,7 +17849,7 @@
 *FAN:	&=w14_25 camel &=r_y_MOT ceiling &=r_y_MOT c &=r_y_MOT c &=r_y_MOT c &=r_y_MOT . 13073150_13076890
 %com:	|RC|337|220|1|AICF|NT|FH|
 %xdb:	average_dB="-19.46" peak_dB="-11.43"
-*OLF:	d &=r_y_MOT d &=r_y_MOT d &=r_y_MOT doughnuts &=r_y_MOT dog &=r_y_MOT d &=r_y_MOT d &=r_y_MOT d &=r_y_MOT . 13076890_13077830
+*OLF:	d &=r_y_MOT d &=r_y_MOT d &=r_y_MOT doughnuts &=r_y_MOT duck+dog &=r_y_MOT d &=r_y_MOT d &=r_y_MOT d &=r_y_MOT . 13076890_13077830
 %xdb:	average_dB="-36.86" peak_dB="-29.37"
 *FAN:	&=w23_76 . 13077830_13084860
 %com:	|RC|337|220|1|AICF|NT|FH|
@@ -17862,10 +17876,10 @@
 %xdb:	average_dB="-20.86" peak_dB="-12.19"
 *TVF:	0 . 13099190_13099990
 %xdb:	average_dB="-51.44" peak_dB="-35.42"
-*FAN:	&=w11_88 feathers &=r_y_MOT feff &=r_y_MOT . 13099990_13102940
+*FAN:	&=w11_88 feathers &=r_y_MOT Fiffer+feffer+feff &=r_y_MOT . 13099990_13102940
 %com:	|RC|337|221|2|AICF|NT|FH|
 %xdb:	average_dB="-17.48" peak_dB="-7.97"
-*NOF:	g &=r_y_MOT g &=r_y_MOT g &=r_y_MOT goat &=r_y_MOT goggles &=r_y_MOT g &=r_y_MOT g &=r_y_MOT g &=r_y_MOT . 13102940_13104160
+*NOF:	g &=r_y_MOT g &=r_y_MOT g &=r_y_MOT goat &=r_y_MOT googoo+goggles &=r_y_MOT g &=r_y_MOT g &=r_y_MOT g &=r_y_MOT . 13102940_13104160
 %xdb:	average_dB="-30.32" peak_dB="-14.05"
 *FAN:	&=w26_47 . 13104160_13111620
 %com:	|RC|337|221|2|AICF|NT|FH|
@@ -17894,7 +17908,7 @@
 *FAN:	&=w13_43 Icabod &=r_y_MOT i &=r_y_MOT i &=r_y_MOT i &=r_y_MOT . 13125610_13129030
 %com:	|RC|337|223|4|AICF|TIFE|FI|
 %xdb:	average_dB="-19.28" peak_dB="-11.48"
-*SIL:	j &=r_y_MOT j &=r_y_MOT j &=r_y_MOT jar &=r_y_MOT j &=r_y_MOT j &=r_y_MOT j &=r_y_MOT . 13129030_13129830
+*SIL:	j &=r_y_MOT j &=r_y_MOT j &=r_y_MOT jelly+jar &=r_y_MOT j &=r_y_MOT j &=r_y_MOT j &=r_y_MOT . 13129030_13129830
 %xdb:	average_dB="-30.94" peak_dB="-15.95"
 *FAN:	&=w33_07 . 13129830_13139000
 %com:	|RC|337|223|4|AICF|NT|FH|
@@ -17963,7 +17977,7 @@
 %xdb:	average_dB="-40.12" peak_dB="-27.31"
 @Eg:	Pause 338
 @Bg:	Conversation 338
-*FAN:	&=w1_10 Book &=r_y_MOT . 13167890_13168890
+*FAN:	&=w1_10 The+foot+book &=r_y_MOT . 13167890_13168890
 %com:	|BC|338|224|0|AICF|NT|FI|
 %xdb:	average_dB="-17.17" peak_dB="-6.87"
 *OLF:	0 . 13168890_13169720
@@ -18043,7 +18057,7 @@
 *FAN:	&=w1_52 . 13215260_13215860
 %com:	|RC|338|225|1|AICF|NT|FH|
 %xdb:	average_dB="-22.78" peak_dB="-11.83"
-*FAN:	&=w11_57 feet &=r_y_MOT feet &=r_y_MOT feet &=r_y_MOT . 13215860_13219260
+*FAN:	&=w11_57 feet &=r_y_MOT feet &=r_y_MOT fur+feet &=r_y_MOT . 13215860_13219260
 %com:	|RC|338|225|1|AICF|NT|FH|
 %xdb:	average_dB="-18.88" peak_dB="-9.58"
 *NOF:	0 . 13219260_13220060
@@ -18068,7 +18082,7 @@
 %xdb:	average_dB="-14.21" peak_dB="-10.23"
 *NOF:	0 . 13229550_13231060
 %xdb:	average_dB="-33.01" peak_dB="-15.76"
-*FAN:	&=w6_74 C &=r_y_MOT . 13231060_13232280
+*FAN:	&=w6_74 A+b+c &=r_y_MOT . 13231060_13232280
 %com:	|RC|338|226|2|AICF|NT|FH|
 %xdb:	average_dB="-21.50" peak_dB="-11.41"
 *SIL:	0 . 13232280_13233660
@@ -18172,7 +18186,7 @@
 *CXN:	0 . 13280240_13281500
 %com:	|RC|338|227|3|AICF|NT|FI|
 %xdb:	average_dB="-36.47" peak_dB="-29.92"
-*FAN:	&=w13_25 Dinosaurs &=r_y_MOT . 13281500_13284300
+*FAN:	&=w13_25 Oh+my+oh+my+oh+dinosaurs &=r_y_MOT . 13281500_13284300
 %com:	|RC|338|227|3|AICF|NT|FI|
 %xdb:	average_dB="-19.82" peak_dB="-12.29"
 *CXF:	0 . 13284300_13285100
@@ -18399,6 +18413,7 @@
 *TVF:	0 . 13398370_13399780
 %xdb:	average_dB="-41.29" peak_dB="-28.38"
 *FAN:	&=w8_32 lion &=q_y_MOT . 13399780_13402160
+%xcom:	not sure if reading the book or pointing out pictures
 %com:	|RC|341|233|0|AIOCF|NT|FH|
 %xdb:	average_dB="-22.48" peak_dB="-10.66"
 *TVF:	0 . 13402160_13403180
@@ -18821,9 +18836,9 @@
 %xdb:	average_dB="-24.42" peak_dB="-13.54"
 *NOF:	0 . 13602110_13603190
 %xdb:	average_dB="-40.36" peak_dB="-24.26"
-*OLN:	sun &=n_y_MOT Sun &=s_n_MOT . 13603190_13606500
+*OLN:	sun &=n_y_MOT Mr+sun &=s_n_MOT . 13603190_13606500
 %xdb:	average_dB="-21.68" peak_dB="-10.04"
-*FAN:	&=w13_78 sun &=s_n_MOT Sun &=s_n_MOT . 13606500_13610860
+*FAN:	&=w13_78 sun &=s_n_MOT Mr+golden+sun &=s_n_MOT . 13606500_13610860
 %com:	|RC|345|243|2|AICF|NT|FH|
 %xdb:	average_dB="-20.00" peak_dB="-9.45"
 *OLN:	0 . 13610860_13611660
@@ -19268,12 +19283,14 @@
 %xdb:	average_dB="-49.59" peak_dB="-38.03"
 *CHN:	0 13827890_13828010
 	&=vocalization . 13828010_13828490
+%xcom:	baby's first word "Mama"
 %com:	|RC|348|255|2|CIC|TIFR|FI|
 %xdb:	average_dB="-21.52" peak_dB="-18.08"
 *FAN:	&=w6_73 . 13828490_13829490
 %com:	|RC|348|255|2|CIC|TIFI|FI|
 %xdb:	average_dB="-14.81" peak_dB="-10.94"
 *CHN:	&=vocalization . 13829490_13830240
+%xcom:	baby's first word "Mama"
 %com:	|RC|348|256|3|CIC|TIFR|FI|
 %xdb:	average_dB="-13.36" peak_dB="-11.54"
 *FAN:	&=w4_26 . 13830240_13831500
@@ -19590,9 +19607,11 @@
 %xdb:	average_dB="-45.02" peak_dB="-34.83"
 *NOF:	0 . 14062350_14064210
 %xdb:	average_dB="-29.94" peak_dB="-17.86"
-*SIL:	0 . 14064210_14233340
+*SIL:	0 . 14064210_14066750
+%xcom:	silence 1 of 2 starts at 14066750.0 -- previous timestamp adjusted: was 14233340
 %xdb:	average_dB="-46.04" peak_dB="-16.40"
 *CHF:	0 14233340_14233470
+%xcom:	subregion 2 of 5 ends at 14100000 -- previous timestamp adjusted: was 14233470 [contains silent region: [14066750.0, 19239031.579] ]
 	&=vfx 14233470_14233840
 	0 . 14233840_14233940
 %xdb:	average_dB="-38.27" peak_dB="-29.94"
@@ -21018,7 +21037,8 @@
 %xdb:	average_dB="-60.37" peak_dB="-32.94"
 *NOF:	0 . 19104290_19104890
 %xdb:	average_dB="-27.24" peak_dB="-19.84"
-*SIL:	0 . 19104890_19246520
+*SIL:	0 . 19104890_19239031
+%xcom:	silence 1 of 2 ends at 19239031.579 -- previous timestamp adjusted: was 19246520
 %xdb:	average_dB="-48.96" peak_dB="-17.50"
 *NOF:	0 . 19246520_19249220
 %xdb:	average_dB="-34.47" peak_dB="-17.94"
@@ -21480,7 +21500,8 @@
 %xdb:	average_dB="-16.57" peak_dB="-8.99"
 *NOF:	0 . 19498820_19499780
 %xdb:	average_dB="-42.77" peak_dB="-36.86"
-*FAN:	&=w0_22 . 19499780_19501010
+*FAN:	&=w0_22 . 19499780_19500000
+%xcom:	subregion 3 of 5 starts at 19500000 -- previous timestamp adjusted: was 19501010. lowest ranked region; skip unless necessary
 %com:	|EC|367|260|1|CIC|NT|FI|
 %xdb:	average_dB="-23.23" peak_dB="-13.67"
 @Eg:	Conversation 367
@@ -27832,7 +27853,8 @@
 %xdb:	average_dB="-42.06" peak_dB="-32.08"
 *TVF:	0 . 23096830_23099080
 %xdb:	average_dB="-41.75" peak_dB="-32.56"
-*TVF:	0 . 23099080_23100080
+*TVF:	0 . 23099080_23100000
+%xcom:	subregion 3 of 5 ends at 23100000 -- previous timestamp adjusted: was 23100080. lowest ranked region; skip unless necessary
 %xdb:	average_dB="-40.57" peak_dB="-31.42"
 *TVF:	0 . 23100080_23101330
 %xdb:	average_dB="-38.41" peak_dB="-31.07"
@@ -31932,7 +31954,8 @@
 *CXN:	0 . 25797590_25798390
 %com:	|RC|584|357|0|CIOCX|NT|FI|
 %xdb:	average_dB="-23.85" peak_dB="-15.15"
-*OLN:	0 . 25798390_25800070
+*OLN:	0 . 25798390_25800000
+%xcom:	subregion 4 of 5 starts at 25800000 -- previous timestamp adjusted: was 25800070
 %xdb:	average_dB="-32.56" peak_dB="-24.73"
 *CHN:	&=vocalization . 25800070_25800680
 %com:	|RC|584|357|0|CIOCX|NT|FI|
@@ -32715,7 +32738,7 @@
 %xdb:	average_dB="-30.82" peak_dB="-18.60"
 *OLN:	0 . 26216730_26218510
 %xdb:	average_dB="-26.99" peak_dB="-15.01"
-*FAN:	&=w4_22 George &=n_n_BRO . 26218510_26219510
+*FAN:	&=w4_22 Curious+george &=n_n_BRO . 26218510_26219510
 %com:	|RC|607|370|0|XIOCA|NT|FI|
 %xdb:	average_dB="-16.69" peak_dB="-9.30"
 *OLN:	0 . 26219510_26220310
@@ -33147,10 +33170,11 @@
 %xdb:	average_dB="-24.71" peak_dB="-16.05"
 *OLN:	0 . 26472700_26473500
 %xdb:	average_dB="-26.59" peak_dB="-16.89"
-*CXN:	thingy &=d_n_SIS . 26473500_26474470
+*CXN:	noodle+thingy &=d_n_SIS . 26473500_26474470
 %com:	|RC|617|376|0|XIOCC|NT|FH|
 %xdb:	average_dB="-29.25" peak_dB="-21.30"
 *OLN:	elbows &=d_n_MOT . 26474470_26476570
+%xcom:	referring to elbow pasta
 %xdb:	average_dB="-25.51" peak_dB="-13.17"
 *FAF:	0 . 26476570_26477390
 %xdb:	average_dB="-33.14" peak_dB="-19.25"
@@ -33245,7 +33269,7 @@
 *CHN:	&=vocalization . 26514710_26515310
 %com:	|RC|619|376|0|CIC|TIFI|FH|
 %xdb:	average_dB="-20.61" peak_dB="-14.94"
-*FAN:	&=w7_29 plates &=d_n_SIS . 26515310_26516450
+*FAN:	&=w7_29 hot+plates &=d_n_SIS . 26515310_26516450
 %com:	|RC|619|377|1|CIC|TIFR|FI|
 %xdb:	average_dB="-24.64" peak_dB="-14.53"
 *NOF:	0 . 26516450_26517790
@@ -33280,7 +33304,7 @@
 *FAN:	&=w4_77 . 26530640_26531650
 %com:	|RC|619|377|1|CIC|NT|FH|
 %xdb:	average_dB="-24.01" peak_dB="-14.86"
-*OLN:	Turtle &=s_n_SIS . 26531650_26533410
+*OLN:	Teenage+mutant+ninja+turtle &=s_n_SIS . 26531650_26533410
 %xdb:	average_dB="-19.97" peak_dB="-12.13"
 *FAN:	&=w12_19 . 26533410_26536540
 %com:	|RC|619|377|1|CIC|NT|FH|
@@ -33331,7 +33355,7 @@
 %xdb:	average_dB="-29.15" peak_dB="-20.45"
 *SIL:	0 . 26561280_26562440
 %xdb:	average_dB="-44.59" peak_dB="-34.08"
-*FAN:	&=w12_90 cheese &=q_n_MOT cheese &=q_n_MOT . 26562440_26566310
+*FAN:	&=w12_90 mozzarella+cheese &=q_n_MOT cheese &=q_n_MOT . 26562440_26566310
 %com:	|EC|619|377|1|CIC|NT|FH|
 %xdb:	average_dB="-27.62" peak_dB="-16.01"
 @Eg:	Conversation 619
@@ -33538,6 +33562,7 @@
 *OLN:	0 . 26667960_26668780
 %xdb:	average_dB="-22.92" peak_dB="-11.61"
 *FAN:	&=w5_81 pigs &=d_y_MOT . 26668780_26669790
+%xcom:	pigs refer to toes
 %com:	|RC|620|383|6|XIC|TIFE|FI|
 %xdb:	average_dB="-17.42" peak_dB="-8.76"
 *OLN:	0 . 26669790_26671260
@@ -33853,6 +33878,7 @@
 *OLN:	0 . 26831910_26832890
 %xdb:	average_dB="-15.01" peak_dB="-10.38"
 *CHN:	&=vocalization . 26832890_26834140
+%xcom:	word?
 %com:	|RC|625|388|0|CIC|TIFI|FH|
 %xdb:	average_dB="-12.39" peak_dB="-9.45"
 *OLN:	0 . 26834140_26834940
@@ -34231,7 +34257,7 @@
 %xdb:	average_dB="-20.81" peak_dB="-13.82"
 *OLN:	0 . 27005050_27005850
 %xdb:	average_dB="-27.98" peak_dB="-17.73"
-*FAN:	&=w9_17 juice &=d_n_SIS face &=d_n_SIS . 27005850_27008090
+*FAN:	&=w9_17 corn+juice &=d_n_SIS face &=d_n_SIS . 27005850_27008090
 %com:	|RC|628|403|0|AMF|NT|FH|
 %xdb:	average_dB="-26.67" peak_dB="-17.26"
 *NOF:	0 . 27008090_27008990
@@ -34312,7 +34338,7 @@
 %xdb:	average_dB="-20.51" peak_dB="-10.28"
 *OLN:	lettuce &=d_n_BR1 lettuce &=d_n_BR1 . 27049390_27052910
 %xdb:	average_dB="-23.88" peak_dB="-8.49"
-*FAN:	&=w12_65 lettuce &=q_n_MOT bowl &=q_n_MOT . 27052910_27055660
+*FAN:	&=w12_65 lettuce &=q_n_MOT salad+bowl &=q_n_MOT . 27052910_27055660
 %com:	|RC|629|403|0|AIOCF|NT|FH|
 %xdb:	average_dB="-19.41" peak_dB="-9.45"
 *OLN:	0 . 27055660_27056500
@@ -35922,8 +35948,10 @@
 %com:	|RC|656|427|0|AICF|NT|FH|
 %xdb:	average_dB="-29.04" peak_dB="-18.99"
 *OLN:	banana &=d_y_MOT . 27911420_27913530
+%xcom:	begin personal information: last name
 %xdb:	average_dB="-23.20" peak_dB="-11.54"
 *FAN:	&=w11_28 . 27913530_27916080
+%xcom:	end personal information: last name
 %com:	|RC|656|427|0|AICF|TIFI|FH|
 %xdb:	average_dB="-19.41" peak_dB="-9.99"
 *OLN:	0 . 27916080_27918720
@@ -36041,11 +36069,13 @@
 *SIL:	0 . 27973210_27974970
 %xdb:	average_dB="-41.59" peak_dB="-22.65"
 *FAN:	&=w5_93 noobles &=n_y_MOT . 27974970_27975650
+%xcom:	referring to bananas?
 %com:	|RC|658|429|1|CIC|TIFR|FI|
 %xdb:	average_dB="-20.21" peak_dB="-10.35"
 *SIL:	0 . 27975650_27976640
 %xdb:	average_dB="-52.40" peak_dB="-45.46"
 *FAN:	&=w3_08 noobles &=n_y_MOT . 27976640_27977760
+%xcom:	referring to bananas
 %com:	|RC|658|429|1|CIC|NT|FH|
 %xdb:	average_dB="-34.87" peak_dB="-23.52"
 *CXN:	noobles &=n_y_BR1 . 27977760_27978590
@@ -36191,10 +36221,10 @@
 %xdb:	average_dB="-39.18" peak_dB="-29.25"
 *OLN:	0 . 28043120_28044160
 %xdb:	average_dB="-14.28" peak_dB="-7.94"
-*CHN:	&=vocalization plate &=q_n_SIS . 28044160_28045170
+*CHN:	&=vocalization hot+plate &=q_n_SIS . 28044160_28045170
 %com:	|RC|659|433|1|AICF|TIFI|FI|
 %xdb:	average_dB="-18.11" peak_dB="-9.12"
-*OLN:	plate &=d_n_MOT . 28045170_28047020
+*OLN:	hot+plate &=d_n_MOT . 28045170_28047020
 %xdb:	average_dB="-18.40" peak_dB="-8.68"
 *FAN:	&=w4_04 . 28047020_28048020
 %com:	|RC|659|434|2|AICF|TIFR|FI|
@@ -38134,7 +38164,7 @@
 %xdb:	average_dB="-34.80" peak_dB="-19.37"
 @Eg:	Pause 689
 @Bg:	Conversation 689
-*FAN:	&=w7_95 tops &=d_n_MOT . 29029230_29031120
+*FAN:	&=w7_95 high+tops &=d_n_MOT . 29029230_29031120
 %com:	|BC|689|479|0|AICF|NT|FI|
 %xdb:	average_dB="-13.40" peak_dB="-7.27"
 *OLN:	pee &=d_n_MOT . 29031120_29031920
@@ -38164,7 +38194,7 @@
 %xdb:	average_dB="-32.47" peak_dB="-21.56"
 *NOF:	0 . 29041490_29042950
 %xdb:	average_dB="-42.97" peak_dB="-28.58"
-*FAN:	&=w9_44 tops &=d_n_BR1 pee &=d_n_BR1 . 29042950_29045580
+*FAN:	&=w9_44 high+tops &=d_n_BR1 pee &=d_n_BR1 . 29042950_29045580
 %com:	|RC|689|479|0|AICF|NT|FI|
 %xdb:	average_dB="-27.50" peak_dB="-15.20"
 *NOF:	0 . 29045580_29046700
@@ -38184,23 +38214,23 @@
 *CHN:	&=vocalization . 29052170_29052770
 %com:	|RC|689|479|0|AICF|TIFI|FI|
 %xdb:	average_dB="-17.95" peak_dB="-11.03"
-*FAN:	&=w7_65 heels &=d_n_BR1 . 29052770_29054670
+*FAN:	&=w7_65 high+heels &=d_n_BR1 . 29052770_29054670
 %com:	|RC|689|480|1|AICF|TIFR|FI|
 %xdb:	average_dB="-27.51" peak_dB="-17.20"
-*OLN:	boots &=d_n_BR1 . 29054670_29055470
+*OLN:	high+heeled+boots &=d_n_BR1 . 29054670_29055470
 %xdb:	average_dB="-29.88" peak_dB="-20.56"
 *FAN:	&=w3_98 . 29055470_29056470
 %com:	|EC|689|480|1|AICF|NT|FH|
 %xdb:	average_dB="-24.27" peak_dB="-16.70"
 @Eg:	Conversation 689
 @Bg:	Pause 690
-*OLN:	tops &=d_n_MOT . 29056470_29057270
+*OLN:	high+tops &=d_n_MOT . 29056470_29057270
 %xdb:	average_dB="-29.69" peak_dB="-22.42"
 *NOF:	0 . 29057270_29058080
 %xdb:	average_dB="-39.33" peak_dB="-26.62"
 *OLF:	0 . 29058080_29060500
 %xdb:	average_dB="-33.36" peak_dB="-19.98"
-*OLN:	tops &=d_n_BR1 . 29060500_29061670
+*OLN:	high+tops &=d_n_BR1 . 29060500_29061670
 %xdb:	average_dB="-27.75" peak_dB="-18.30"
 @Eg:	Pause 690
 @Bg:	Conversation 690
@@ -38557,6 +38587,7 @@
 *OLN:	0 . 29265250_29267690
 %xdb:	average_dB="-29.47" peak_dB="-22.83"
 *FAN:	&=w5_37 . 29267690_29268690
+%xcom:	begin personal information: no consent from neighbor
 %com:	|RC|700|484|0|AIOCM|NT|FI|
 %xdb:	average_dB="-18.48" peak_dB="-12.89"
 *OLN:	0 . 29268690_29269930
@@ -38664,6 +38695,7 @@
 *OLN:	0 . 29397750_29399340
 %xdb:	average_dB="-24.25" peak_dB="-10.83"
 *FAN:	&=w3_68 . 29399340_29400340
+%xcom:	end personal information: no consent from neighbor
 %com:	|RC|705|484|0|XIC|TIFI|FH|
 %xdb:	average_dB="-23.30" peak_dB="-15.47"
 *OLN:	0 . 29400340_29401160
@@ -41509,14 +41541,14 @@
 *FAN:	&=w4_14 . 31208510_31209510
 %com:	|RC|753|539|0|AIOCCXF|NT|FH|
 %xdb:	average_dB="-28.96" peak_dB="-22.45"
-*OLN:	ons &=d_n_MOT . 31209510_31212100
+*OLN:	roll+ons &=d_n_MOT . 31209510_31212100
 %xdb:	average_dB="-24.22" peak_dB="-14.79"
 *FAN:	&=w5_58 . 31212100_31213220
 %com:	|RC|753|539|0|AIOCCXF|NT|FH|
 %xdb:	average_dB="-24.19" peak_dB="-17.51"
 *OLN:	0 . 31213220_31216510
 %xdb:	average_dB="-25.27" peak_dB="-16.26"
-*FAN:	&=w2_45 on &=d_n_MOT . 31216510_31217510
+*FAN:	&=w2_45 roll+on &=d_n_MOT . 31216510_31217510
 %com:	|RC|753|539|0|AIOCCXF|NT|FH|
 %xdb:	average_dB="-28.15" peak_dB="-20.24"
 *OLN:	0 . 31217510_31219010
@@ -41554,7 +41586,7 @@
 *FAN:	&=w6_77 sprays &=d_n_MOT . 31237110_31238680
 %com:	|BC|754|539|0|AMF|NT|FI|
 %xdb:	average_dB="-26.96" peak_dB="-15.60"
-*OLN:	ons &=d_n_MOT . 31238680_31240080
+*OLN:	roll+ons &=d_n_MOT . 31238680_31240080
 %xdb:	average_dB="-24.44" peak_dB="-17.39"
 *FAN:	&=w5_27 . 31240080_31241080
 %com:	|RC|754|539|0|AMF|NT|FH|
@@ -41595,7 +41627,7 @@
 *CXN:	0 . 31265760_31266680
 %com:	|RC|755|539|0|XIC|NT|FH|
 %xdb:	average_dB="-26.03" peak_dB="-17.42"
-*FAN:	&=w8_70 Turbo &=n_n_ADF Snail &=n_n_ADF . 31266680_31268010
+*FAN:	&=w8_70 Turbo &=n_n_ADF Turbo+the+snail &=n_n_ADF . 31266680_31268010
 %com:	|RC|755|539|0|XIC|NT|FI|
 %xdb:	average_dB="-22.97" peak_dB="-14.11"
 *OLF:	0 . 31268010_31269000

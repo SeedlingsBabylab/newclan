@@ -41,7 +41,7 @@ class ClanFile:
         self.comments = []
 
         #re1='((?:[a-z][a-z]+))' # the word
-        re1='((?:[a-z][a-z0-9_]*))' # the word
+        re1='((?:[a-z][a-z0-9_+]*))' # the word
         re2='(\\s+)'	        # whitespace
         re3='(&)'	            # &
         re4='(.)'	            # utterance_type
@@ -112,12 +112,12 @@ class ClanFile:
                 # if there are entries on this line, fill them into self.words
                 if entries:
                     for entry in entries:
-                        self.words.append((entry[0],            # word
+                        self.words.append([entry[0],            # word
                                            entry[3],            # utterance_type
                                            entry[5],            # object_present
                                            entry[7],            # speaker
                                            curr_interval[0],    # onset
-                                           curr_interval[1]))   # offset
+                                           curr_interval[1]])   # offset
 
 
                 if line.startswith("%com:") and ("|" not in line):
@@ -127,6 +127,7 @@ class ClanFile:
         self.grouped_words = self.chunk_words(self.words)
         print self.grouped_words
         print self.comments
+        self.check_words()
 
     def merge_its_and_clan(self):
 
@@ -134,16 +135,31 @@ class ClanFile:
         words = grouped_words.popleft()
 
         comments = collections.deque(self.comments)
-        comment = comments.popleft()
+        sil_subr_comment = ""
+        regular_comment = ""
+        curr_comment = comments.popleft()
+
+        silsubr_comment_ready = False
+        regular_comment_ready = False
 
         curr_interval = [None, None]
         prev_interval = [None, None]
+
+        #curr_comment_interval = [None, None]
 
         prev_line = ""
 
         with open(self.its_path, "rU") as its_file:
             with open(self.out_path, "w") as output:
                 for index, line in enumerate(its_file):
+                    if silsubr_comment_ready:
+                        output.write(sil_subr_comment.replace("\t ", "\t"))
+                        print "wrote subregion:  " + sil_subr_comment
+                        silsubr_comment_ready = False
+                    if regular_comment_ready:
+                        output.write(regular_comment)
+                        print "wrote regular comment:  " + regular_comment
+                        regular_comment_ready = False
                     # we skip over the birth date header
                     if line.startswith("@Birth"):
                         continue
@@ -169,9 +185,24 @@ class ClanFile:
                         curr_interval[0] = int(interval[0])
                         curr_interval[1] = int(interval[1])
 
-                        # if curr_interval[0] == comment[1]:
-                        #
-                        #
+                        if curr_interval[0] == curr_comment[1]:
+                            if "subregion" in curr_comment[0] or\
+                                 "silence" in curr_comment[0]:
+                                curr_interval[1] = curr_comment[2]
+                                sil_subr_comment = curr_comment[0].replace("%com", "%xcom")
+                                silsubr_comment_ready = True
+                                curr_comment = comments.popleft()
+                                print "curr_comment: " + str(curr_comment)
+
+                            else:
+                                #output.write(curr_comment[0].replace("%com", "%xcom"))
+                                regular_comment = curr_comment[0].replace("%com", "%xcom")
+                                regular_comment_ready = True
+                                curr_comment = comments.popleft()
+                                print "curr_comment: " + str(curr_comment)
+
+
+
                         if curr_interval[0] == words[0][4] and\
                             curr_interval[1] == words[0][5]:
 
@@ -188,7 +219,7 @@ class ClanFile:
 
                             word_count_reg_result = self.word_cnt_regx.search(line)
                             if word_count_reg_result:
-                                output.write(word_count_reg_result.group()+ " ")
+                                output.write(word_count_reg_result.group() + " ")
 
                             # write all our entries for this interval
                             for entry in words:
@@ -201,7 +232,10 @@ class ClanFile:
                             if grouped_words:
                                 words = grouped_words.popleft()
                         else:
-                            output.write(line)
+                            output.write(line.replace(interval_str,
+                                                      "{}_{}".format(curr_interval[0],
+                                                                     curr_interval[1])))
+
                     elif line.startswith("\t"):
                         line_split = line.split()
 
@@ -216,6 +250,21 @@ class ClanFile:
                             interval = interval_str.split("_")
                             curr_interval[0] = int(interval[0])
                             curr_interval[1] = int(interval[1])
+
+                            if curr_interval[0] == curr_comment[1]:
+                                if "subregion" in curr_comment[0] or\
+                                     "silence" in curr_comment[0]:
+                                    curr_interval[1] = curr_comment[2]
+                                    sil_subr_comment = curr_comment[0].replace("%com", "%xcom")
+                                    silsubr_comment_ready = True
+                                    curr_comment = comments.popleft()
+                                    print "curr_comment: " + str(curr_comment)
+
+                                else:
+                                    regular_comment = curr_comment[0].replace("%com", "%xcom")
+                                    regular_comment_ready = True
+                                    curr_comment = comments.popleft()
+                                    print "curr_comment: " + str(curr_comment)
 
                             if curr_interval[0] == words[0][4] and\
                                curr_interval[1] == words[0][5]:
@@ -244,6 +293,23 @@ class ClanFile:
                                     words = grouped_words.popleft()
                             else:
                                 output.write(line)
+
+        print "hello"
+
+    def check_words(self):
+        """
+        Makes sure formatting on entries is correct
+        :return:
+        """
+
+        # make sure compound words only have the first
+        # letter capitalized (if necessary)
+        for entry in self.words:
+            if "+" in entry[0] and entry[0][0].isupper():
+                line = entry[0].lower()
+                line = line[0].upper() + line[1:]
+                print "line: " + line
+                entry[0] = line
 
     def chunk_words(self, words):
         """
