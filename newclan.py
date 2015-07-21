@@ -130,7 +130,7 @@ class ClanFile:
         self.check_words()
 
     def merge_its_and_clan(self):
-
+        comment_written_cnt = 0
         grouped_words = collections.deque(self.grouped_words)
         words = grouped_words.popleft()
 
@@ -145,21 +145,47 @@ class ClanFile:
         curr_interval = [None, None]
         prev_interval = [None, None]
 
-        #curr_comment_interval = [None, None]
-
         prev_line = ""
 
         with open(self.its_path, "rU") as its_file:
             with open(self.out_path, "w") as output:
                 for index, line in enumerate(its_file):
+
+                    # in the case where we have adjacent comments, we check against
+                    # the last interval again, since it hasn't been updated yet (previous
+                    # line was a comment too)
+                    if curr_interval[0] == curr_comment[1]:
+                        if "subregion" in curr_comment[0] or\
+                             "silence" in curr_comment[0]:
+                            curr_interval[1] = curr_comment[2]
+                            sil_subr_comment = curr_comment[0].replace("%com", "%xcom")
+                            silsubr_comment_ready = True
+                            if comments:
+                                curr_comment = comments.popleft()
+                            print "curr_comment: " + str(curr_comment)
+                        else:
+                            regular_comment = curr_comment[0].replace("%com", "%xcom")
+                            regular_comment_ready = True
+                            if comments:
+                                curr_comment = comments.popleft()
+                            print "curr_comment: " + str(curr_comment)
+
+                    # if subregion/silence/regular comment is ready to write,
+                    # write it out and reset the flag
                     if silsubr_comment_ready:
                         output.write(sil_subr_comment.replace("\t ", "\t"))
+                        comment_written_cnt += 1
                         print "wrote subregion:  " + sil_subr_comment
+                        print "curr_interval: " + str(curr_interval)
                         silsubr_comment_ready = False
                     if regular_comment_ready:
                         output.write(regular_comment)
+                        comment_written_cnt += 1
                         print "wrote regular comment:  " + regular_comment
+                        print "curr_interval: " + str(curr_interval)
                         regular_comment_ready = False
+
+
                     # we skip over the birth date header
                     if line.startswith("@Birth"):
                         continue
@@ -191,14 +217,16 @@ class ClanFile:
                                 curr_interval[1] = curr_comment[2]
                                 sil_subr_comment = curr_comment[0].replace("%com", "%xcom")
                                 silsubr_comment_ready = True
-                                curr_comment = comments.popleft()
+                                if comments:
+                                    curr_comment = comments.popleft()
                                 print "curr_comment: " + str(curr_comment)
 
                             else:
                                 #output.write(curr_comment[0].replace("%com", "%xcom"))
                                 regular_comment = curr_comment[0].replace("%com", "%xcom")
                                 regular_comment_ready = True
-                                curr_comment = comments.popleft()
+                                if comments:
+                                    curr_comment = comments.popleft()
                                 print "curr_comment: " + str(curr_comment)
 
 
@@ -294,8 +322,8 @@ class ClanFile:
                             else:
                                 output.write(line)
 
-        print "hello"
-
+        print "\n\n# of comments written: " + str(comment_written_cnt)
+        print "total # of comments: " + str(len(self.comments))
     def check_words(self):
         """
         Makes sure formatting on entries is correct

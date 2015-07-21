@@ -38695,6 +38695,7 @@
 *OLN:	0 . 29397750_29399340
 %xdb:	average_dB="-24.25" peak_dB="-10.83"
 *FAN:	&=w3_68 . 29399340_29400340
+%xcom:	subregion 4 of 5 ends at 29400000 -- previous timestamp adjusted: was 29400340
 %xcom:	end personal information: no consent from neighbor
 %com:	|RC|705|484|0|XIC|TIFI|FH|
 %xdb:	average_dB="-23.30" peak_dB="-15.47"
@@ -41035,7 +41036,8 @@
 *FAN:	&=w7_85 . 30898350_30899640
 %com:	|RC|739|533|2|AICF|NT|FH|
 %xdb:	average_dB="-28.11" peak_dB="-19.08"
-*OLN:	0 . 30899640_30901610
+*OLN:	0 . 30899640_30900000
+%xcom:	subregion 5 of 5 starts at 30900000 -- previous timestamp adjusted: was 30901610
 %xdb:	average_dB="-24.16" peak_dB="-12.44"
 *FAN:	&=w5_14 . 30901610_30902610
 %com:	|RC|739|533|2|AICF|NT|FH|
@@ -41485,6 +41487,7 @@
 @Eg:	Conversation 751
 @Bg:	Pause 752
 *OLN:	sprays &=d_n_MOT oils &=d_n_ADF . 31168480_31175460
+%xcom:	verb as object
 %xdb:	average_dB="-25.78" peak_dB="-15.32"
 @Eg:	Pause 752
 @Bg:	Conversation 752
@@ -47897,8 +47900,10 @@
 @Bg:	Pause 855
 *OLF:	0 . 34498470_34499280
 %xdb:	average_dB="-37.22" peak_dB="-30.45"
-*SIL:	0 . 34499280_34500220
+*SIL:	0 . 34499280_34500000
+%xcom:	subregion 5 of 5 ends at 34500000 -- previous timestamp adjusted: was 34500220
 %xdb:	average_dB="-48.80" peak_dB="-42.48"
+%xcom:	subregion 5 of 5 ends at 34500000 -- previous timestamp adjusted: was 34500220
 *FAF:	0 . 34500220_34501630
 %xdb:	average_dB="-38.06" peak_dB="-32.71"
 *OLF:	0 . 34501630_34502640
