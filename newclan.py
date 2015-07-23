@@ -103,7 +103,7 @@ class ClanFile:
                     curr_interval[1] = int(interval[1])
 
                 # this is for lines that wrapped around past a single line
-                if (line.startswith("\t")):
+                if line.startswith("\t"):
                     line = last_line + line
 
                 # if there are "word &=d_y_BRO" entries within the line, parse them out
@@ -245,6 +245,7 @@ class ClanFile:
                             if "&=crying" in line:
                                 output.write("&=crying ")
 
+                            # if there's an adult word count code in the line, write it out
                             word_count_reg_result = self.word_cnt_regx.search(line)
                             if word_count_reg_result:
                                 output.write(word_count_reg_result.group() + " ")
@@ -253,16 +254,23 @@ class ClanFile:
                             for entry in words:
                                 output.write(entry[0] + " &={}_{}_{} ".format(entry[1], entry[2], entry[3]))
 
-                            if "." not in line:
+                            if "." not in line and not (silsubr_comment_ready or regular_comment_ready):
                                 output.write(line_split[-1] + "\n")
                             else:
                                 output.write(". " + line_split[-1] + "\n")
                             if grouped_words:
                                 words = grouped_words.popleft()
                         else:
-                            output.write(line.replace(interval_str,
-                                                      "{}_{}".format(curr_interval[0],
+                            # if we're about to write a comment after the start of a multi line
+                            # entry, then we need to add a "." on this line before going to the next
+                            if "." not in line and (silsubr_comment_ready or regular_comment_ready):
+                                output.write(line.replace("\025" + interval_str,
+                                                      ". \025{}_{}".format(curr_interval[0],
                                                                      curr_interval[1])))
+                            else:
+                                output.write(line.replace(interval_str,
+                                                          "{}_{}".format(curr_interval[0],
+                                                                         curr_interval[1])))
 
                     elif line.startswith("\t"):
                         line_split = line.split()
@@ -351,9 +359,7 @@ class ClanFile:
         multiple words per line.
         :return: list of lists containing words taken from clan file
         """
-
         result = []
-
         temp_group = []
 
         prev_word = None
@@ -369,7 +375,6 @@ class ClanFile:
                 prev_word = word
             else:
                 temp_group.append(word)
-
         return result
 
 class ITSFile:
@@ -386,7 +391,7 @@ class ITSFile:
 
 def print_usage():
     print "USAGE: \n"
-    print "python newclan.py input_clan its_file output"
+    print "python newclan.py input_clan its_skeleton output"
 
 
 
