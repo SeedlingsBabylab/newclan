@@ -51,7 +51,7 @@ class ClanFile:
         re8='((?:[a-z][a-z0-9_]*))' # speaker
 
         self.entry_regx = re.compile(re1+re2+re3+re4+re5+re6+re7+re8, re.IGNORECASE | re.DOTALL)
-        self.interval_regx = re.compile("(\d+_\d{3,})")
+        self.interval_regx = re.compile("(\025\d+_\d+)")
 
         re9='(&)'	# Any Single Character 1
         re10='(=)'	# Any Single Character 2
@@ -97,7 +97,7 @@ class ClanFile:
                     prev_interval[1] = curr_interval[1]
 
                     # set the new curr_interval
-                    interval_str = interval_reg_result.group()
+                    interval_str = interval_reg_result.group().replace("\025", "")
                     interval = interval_str.split("_")
                     curr_interval[0] = int(interval[0])
                     curr_interval[1] = int(interval[1])
@@ -206,7 +206,7 @@ class ClanFile:
                         prev_interval[1] = curr_interval[1]
 
                         # parse out the new current line interval and set it
-                        interval_str = self.interval_regx.search(line).group()
+                        interval_str = self.interval_regx.search(line).group().replace("\025", "")
                         interval = interval_str.split("_")
                         curr_interval[0] = int(interval[0])
                         curr_interval[1] = int(interval[1])
@@ -282,7 +282,7 @@ class ClanFile:
                         if interval_regx_result is None:
                             output.write(line)
                         else:   # this is part of a multi line entry (with multiple intervals)
-                            interval_str = interval_regx_result.group()
+                            interval_str = interval_regx_result.group().replace("\025", "")
                             interval = interval_str.split("_")
                             curr_interval[0] = int(interval[0])
                             curr_interval[1] = int(interval[1])
