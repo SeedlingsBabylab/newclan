@@ -9,25 +9,6 @@ participants = "@Participants:\tSIL Silence LENA, MAN Male_Adult_Near Male,  MAF
 \tNoise_Near LENA, NOF Noise_Far LENA, OLN Overlap_Near LENA, OLF Overlap_Far LENA, TVN\n\
 \tElectronic_Sound_Near Media, TVF Electronic_Sound_Far Media\n"
 
-ids = ["@ID:\teng|LENA|SIL|||||LENA||Silence|",
-        "@ID:\teng|LENA|MAN|||||Male||Male_Adult_Near|",
-        "@ID:\teng|LENA|MAF|||||Male||Male_Adult_Far|",
-        "@ID:\teng|LENA|FAN|||||Female||Female_Adult_Near|",
-        "@ID:\teng|LENA|FAF|||||Female||Female_Adult_Far|",
-        "@ID:\teng|LENA|CHN|1;|female|||Target_Child||Key_Child_Clear|",
-        "@ID:\teng|LENA|CHF|1;|female|||Target_Child||Key_Child_Unclear|",
-        "@ID:\teng|LENA|CXN|||||Child||Other_Child_Near|",
-        "@ID:\teng|LENA|CXF|||||Child||Other_Child_Far|",
-        "@ID:\teng|LENA|NON|||||LENA||Noise_Near|",
-        "@ID:\teng|LENA|NOF|||||LENA||Noise_Far|",
-        "@ID:\teng|LENA|OLN|||||LENA||Overlap_Near|",
-        "@ID:\teng|LENA|OLF|||||LENA||Overlap_Far|",
-        "@ID:\teng|LENA|TVN|||||Media||Electronic_Sound_Near|",
-        "@ID:\teng|LENA|TVF|||||Media||Electronic_Sound_Far|"
-    ]
-
-
-
 class ClanFile:
     def __init__(self, clan_path, its_path, out_path):
         self.path = clan_path
@@ -71,7 +52,6 @@ class ClanFile:
         and fills a list of tuples with the word and onset/offsets
         :return:
         """
-
         last_line = ""
         prev_interval = [None, None]
         curr_interval = [None, None]
@@ -88,7 +68,7 @@ class ClanFile:
                     # it must be on a following line. We save the previous
                     # line and move forward
                     if interval_reg_result is None:
-                        print "interval regex was none, clan line: " + str(index)
+                        #print "interval regex was none, clan line: " + str(index)
                         last_line = line
                         continue
 
@@ -150,6 +130,7 @@ class ClanFile:
         with open(self.its_path, "rU") as its_file:
             with open(self.out_path, "w") as output:
                 for index, line in enumerate(its_file):
+                    print "length of grouped_words: " + str(len(self.grouped_words))
 
                     # in the case where we have adjacent comments, we check against
                     # the last interval again, since it hasn't been updated yet (previous
@@ -158,33 +139,40 @@ class ClanFile:
                         if "subregion" in curr_comment[0] or\
                              "silence" in curr_comment[0]:
                             curr_interval[1] = curr_comment[2]
-                            sil_subr_comment = curr_comment[0].replace("%com", "%xcom")
+
+                            sil_subr_comment = re.sub(r"%com:\s+", r"%xcom:\t", curr_comment[0])
+                            #print "sil_subr_comment: " + sil_subr_comment
+                            #sil_subr_comment = curr_comment[0].replace("%com", "%xcom")
+
                             silsubr_comment_ready = True
                             if comments:
                                 curr_comment = comments.popleft()
-                            print "curr_comment: " + str(curr_comment)
+                            #print "curr_comment: " + str(curr_comment)
                         else:
-                            regular_comment = curr_comment[0].replace("%com", "%xcom")
+
+                            regular_comment = re.sub(r"%com:\s+", r"%xcom:\t", curr_comment[0])
+                            #print "regular comment: " + regular_comment
+                            #regular_comment = curr_comment[0].replace("%com", "%xcom")
+
                             regular_comment_ready = True
                             if comments:
                                 curr_comment = comments.popleft()
-                            print "curr_comment: " + str(curr_comment)
+                            #print "curr_comment: " + str(curr_comment)
 
                     # if subregion/silence/regular comment is ready to write,
                     # write it out and reset the flag
                     if silsubr_comment_ready:
                         output.write(sil_subr_comment.replace("\t ", "\t"))
                         comment_written_cnt += 1
-                        print "wrote subregion:  " + sil_subr_comment
-                        print "curr_interval: " + str(curr_interval)
+                        #print "wrote subregion:  " + sil_subr_comment
+                        #print "curr_interval: " + str(curr_interval)
                         silsubr_comment_ready = False
                     if regular_comment_ready:
                         output.write(regular_comment)
                         comment_written_cnt += 1
-                        print "wrote regular comment:  " + regular_comment
-                        print "curr_interval: " + str(curr_interval)
+                        #print "wrote regular comment:  " + regular_comment
+                        #print "curr_interval: " + str(curr_interval)
                         regular_comment_ready = False
-
 
                     # we skip over the birth date header
                     if line.startswith("@Birth"):
@@ -215,21 +203,30 @@ class ClanFile:
                             if "subregion" in curr_comment[0] or\
                                  "silence" in curr_comment[0]:
                                 curr_interval[1] = curr_comment[2]
-                                sil_subr_comment = curr_comment[0].replace("%com", "%xcom")
+
+
+                                sil_subr_comment = re.sub(r"%com:\s+", r"%xcom:\t", curr_comment[0])
+                                #print "sil_subr_comment: " + sil_subr_comment
+
+                                #sil_subr_comment = curr_comment[0].replace("%com", "%xcom")
+
+
                                 silsubr_comment_ready = True
                                 if comments:
                                     curr_comment = comments.popleft()
-                                print "curr_comment: " + str(curr_comment)
+                                #print "curr_comment: " + str(curr_comment)
 
                             else:
                                 #output.write(curr_comment[0].replace("%com", "%xcom"))
-                                regular_comment = curr_comment[0].replace("%com", "%xcom")
+
+                                regular_comment = re.sub(r"%com:\s+", r"%xcom:\t", curr_comment[0])
+                                #print "regular comment: " + regular_comment
+
+                                #regular_comment = curr_comment[0].replace("%com", "%xcom")
                                 regular_comment_ready = True
                                 if comments:
                                     curr_comment = comments.popleft()
-                                print "curr_comment: " + str(curr_comment)
-
-
+                                #print "curr_comment: " + str(curr_comment)
 
                         if curr_interval[0] == words[0][4] and\
                             curr_interval[1] == words[0][5]:
@@ -294,13 +291,13 @@ class ClanFile:
                                     sil_subr_comment = curr_comment[0].replace("%com", "%xcom")
                                     silsubr_comment_ready = True
                                     curr_comment = comments.popleft()
-                                    print "curr_comment: " + str(curr_comment)
+                                    #print "curr_comment: " + str(curr_comment)
 
                                 else:
                                     regular_comment = curr_comment[0].replace("%com", "%xcom")
                                     regular_comment_ready = True
                                     curr_comment = comments.popleft()
-                                    print "curr_comment: " + str(curr_comment)
+                                    #print "curr_comment: " + str(curr_comment)
 
                             if curr_interval[0] == words[0][4] and\
                                curr_interval[1] == words[0][5]:
@@ -344,7 +341,7 @@ class ClanFile:
             if "+" in entry[0] and entry[0][0].isupper():
                 line = entry[0].lower()
                 line = line[0].upper() + line[1:]
-                print "line: " + line
+                #print "line: " + line
                 entry[0] = line
 
     def chunk_words(self, words):
@@ -377,23 +374,9 @@ class ClanFile:
                 temp_group.append(word)
         return result
 
-class ITSFile:
-
-    def __init__(self, its_path, clan_path):
-        self.path = its_path
-        self.clan_path = clan_path
-
-    # def parse_its(self):
-    #
-    #     with open(self.path, "rU") as  its_file:
-    #         with open(self.clan_path) as clan_file:
-
-
 def print_usage():
     print "USAGE: \n"
     print "python newclan.py input_clan its_skeleton output"
-
-
 
 if __name__ == "__main__":
 
