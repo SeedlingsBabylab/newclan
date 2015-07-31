@@ -4617,7 +4617,6 @@
 *OLN:	4103250_4105630
 *CHN:	&=vocalization 4105630_4106230
 %com:	|RC|197|143|0|CIOCX|NT|FH|
-
 *OLN:	4106230_4107660
 *CHN:	&=vocalization 4107660_4109280
 %com:	|RC|197|143|0|CIOCX|NT|FH|
@@ -4626,7 +4625,6 @@
 %com:	|EC|197|143|0|CIOCX|NT|FH|
 *OLF:	4112350_4115460
 *CHN:	&=crying 4115460_4116130
-
 *OLN:	animal &d|n|TOY animals &s|n|TOY animals &s|n|TOY lion &n|y|TOY 4116130_4129360
 *CHN:	&=vocalization 4129360_4130150
 %com:	|BC|198|143|0|CIC|NT|FI|
@@ -4671,7 +4669,6 @@
 *CHN:	4156090_4156470
 *CHN:	&=vocalization 4156470_4157220
 %com:	|EC|198|144|1|CIC|TIFE|FI|
-
 *OLF:	zebra &s|n|TOY kangaroo &s|n|TOY bird &s|n|TOY elephant &s|n|TOY 4157220_4162780
 *TVF:	4162780_4163810
 *OLF:	4163810_4167210
@@ -6025,15 +6022,12 @@
 *CHN:	&=vocalization 5343200_5343610
 %com:	|RC|243|190|2|CIC|TIFI|FI|
 *OLN:	5343610_5344410
-
 *FAN:	stairs &n|y|MOT 5344410_5345410
 %com:	|RC|243|191|3|CIC|TIFR|FI|
-
 *OLN:	5345410_5346210
 *CHN:	&=vocalization 5346210_5346810
 %com:	|RC|243|191|3|CIC|TIFE|FI|
 *OLN:	stairs &n|y|MOT 5346810_5347640
-
 %com:	using stairs as referring to steps
 *CXN:	5347640_5348240
 %com:	|RC|243|191|3|CIC|NT|FI|

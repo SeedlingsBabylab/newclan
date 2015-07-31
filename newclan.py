@@ -103,15 +103,18 @@ class ClanFile:
                 if line.startswith("%com:") and ("|" not in line):
                     self.comments.append((line, curr_interval[0], curr_interval[1]))
 
-        print self.words
+        #print self.words
         self.grouped_words = self.chunk_words(self.words)
-        print self.grouped_words
-        print self.comments
+        #print self.grouped_words
+        #print self.comments
         self.check_words()
 
     def merge_its_and_clan(self):
         comment_written_cnt = 0
         grouped_words = collections.deque(self.grouped_words)
+        #print self.words
+        #print self.grouped_words
+        #print grouped_words
         words = grouped_words.popleft()
 
         comments = collections.deque(self.comments)
@@ -126,11 +129,13 @@ class ClanFile:
         prev_interval = [None, None]
 
         prev_line = ""
-
+        print grouped_words
         with open(self.its_path, "rU") as its_file:
             with open(self.out_path, "w") as output:
                 for index, line in enumerate(its_file):
-                    print "length of grouped_words: " + str(len(self.grouped_words))
+
+
+                    #print "length of grouped_words: " + str(len(self.grouped_words))
 
                     # in the case where we have adjacent comments, we check against
                     # the last interval again, since it hasn't been updated yet (previous
@@ -228,8 +233,28 @@ class ClanFile:
                                     curr_comment = comments.popleft()
                                 #print "curr_comment: " + str(curr_comment)
 
-                        if curr_interval[0] == words[0][4] and\
-                            curr_interval[1] == words[0][5]:
+
+
+                        if ((curr_interval[0] == words[0][4] and    # correct case
+                            curr_interval[1] == words[0][5]) or
+
+                            ((curr_interval[0] - 1) == words[0][4] and  # all the +/- 1 rounding errors
+                            (curr_interval[1] - 1) == words[0][5]) or
+
+                            (curr_interval[0] == words[0][4] and
+                            (curr_interval[1] - 1) == words[0][5]) or
+
+                            ((curr_interval[0] - 1) == words[0][4] and
+                            curr_interval[1] == words[0][5]) or
+
+                            (curr_interval[0] + 1  == words[0][4] and
+                            (curr_interval[1] + 1) == words[0][5]) or
+
+                            (curr_interval[0] + 1  == words[0][4] and
+                            curr_interval[1] == words[0][5]) or
+
+                            (curr_interval[0]  == words[0][4] and
+                            curr_interval[1] + 1== words[0][5])):
 
                             output.write(line_split[0] + "\t")
 
@@ -360,7 +385,7 @@ class ClanFile:
         temp_group = []
 
         prev_word = None
-        for word in words:
+        for index, word in enumerate(words):
             if prev_word is None:
                 temp_group.append(word)
                 prev_word = word
@@ -370,8 +395,11 @@ class ClanFile:
                 temp_group = []
                 temp_group.append(word)
                 prev_word = word
+                if index == len(words) - 1: # that was the last word, put it in the results immediately
+                    result.append(temp_group)
             else:
                 temp_group.append(word)
+        print "result: " + str(result)
         return result
 
 def print_usage():
