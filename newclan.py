@@ -348,6 +348,24 @@ class ClanFile:
                             if ((curr_interval[0] == words[0][4] and
                                curr_interval[1] == words[0][5]) or
 
+                                ((curr_interval[0] - 1) == words[0][4] and  # all the +/- 1 rounding errors
+                                (curr_interval[1] - 1) == words[0][5]) or
+
+                                (curr_interval[0] == words[0][4] and
+                                (curr_interval[1] - 1) == words[0][5]) or
+
+                                ((curr_interval[0] - 1) == words[0][4] and
+                                curr_interval[1] == words[0][5]) or
+
+                                (curr_interval[0] + 1  == words[0][4] and
+                                (curr_interval[1] + 1) == words[0][5]) or
+
+                                (curr_interval[0] + 1  == words[0][4] and
+                                curr_interval[1] == words[0][5]) or
+
+                                (curr_interval[0]  == words[0][4] and
+                                curr_interval[1] + 1== words[0][5])
+
                                 (prev_interval[1] == words[0][4] and
                                 curr_interval[0] == words[0][5])):
 
