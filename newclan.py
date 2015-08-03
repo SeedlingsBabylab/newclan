@@ -128,19 +128,21 @@ class ClanFile:
         curr_interval = [None, None]
         prev_interval = [None, None]
 
+        broken_interval = None
+
         prev_line = ""
         print grouped_words
         with open(self.its_path, "rU") as its_file:
             with open(self.out_path, "w") as output:
                 for index, line in enumerate(its_file):
 
-
-                    #print "length of grouped_words: " + str(len(self.grouped_words))
-
                     # in the case where we have adjacent comments, we check against
                     # the last interval again, since it hasn't been updated yet (previous
                     # line was a comment too)
-                    if curr_interval[0] == curr_comment[1]:
+                    if (curr_interval[0] == curr_comment[1] or
+                        curr_interval[0] == curr_comment[1] - 1 or
+                        curr_interval[0] == curr_comment[1] + 1):
+
                         if "subregion" in curr_comment[0] or\
                              "silence" in curr_comment[0]:
                             curr_interval[1] = curr_comment[2]
@@ -193,7 +195,8 @@ class ClanFile:
                         output.write(line)
                     elif line.startswith("*"):
                         line_split = line.split()
-
+                        #print words
+                        #print curr_comment
                         # rearrange previous and current intervals
                         prev_interval[0] = curr_interval[0]
                         prev_interval[1] = curr_interval[1]
@@ -203,6 +206,7 @@ class ClanFile:
                         interval = interval_str.split("_")
                         curr_interval[0] = int(interval[0])
                         curr_interval[1] = int(interval[1])
+                        #print curr_interval
 
                         if curr_interval[0] == curr_comment[1]:
                             if "subregion" in curr_comment[0] or\
@@ -234,6 +238,12 @@ class ClanFile:
                                 #print "curr_comment: " + str(curr_comment)
 
 
+                        # special case where single interval in .cex is broken
+                        # across multiple intervals in .cha
+                        if (prev_interval[1] == words[0][4] and
+                            curr_interval[0] == words[0][5]):
+                            print "found broken interval: " + str(curr_interval)
+
 
                         if ((curr_interval[0] == words[0][4] and    # correct case
                             curr_interval[1] == words[0][5]) or
@@ -254,7 +264,10 @@ class ClanFile:
                             curr_interval[1] == words[0][5]) or
 
                             (curr_interval[0]  == words[0][4] and
-                            curr_interval[1] + 1== words[0][5])):
+                            curr_interval[1] + 1== words[0][5]) or
+
+                            (prev_interval[1] == words[0][4] and    # broken interval condition
+                                curr_interval[0] == words[0][5])):
 
                             output.write(line_split[0] + "\t")
 
@@ -304,6 +317,8 @@ class ClanFile:
                         if interval_regx_result is None:
                             output.write(line)
                         else:   # this is part of a multi line entry (with multiple intervals)
+                            prev_interval[0] = curr_interval[0]
+                            prev_interval[1] = curr_interval[1]
                             interval_str = interval_regx_result.group().replace("\025", "")
                             interval = interval_str.split("_")
                             curr_interval[0] = int(interval[0])
@@ -324,8 +339,17 @@ class ClanFile:
                                     curr_comment = comments.popleft()
                                     #print "curr_comment: " + str(curr_comment)
 
-                            if curr_interval[0] == words[0][4] and\
-                               curr_interval[1] == words[0][5]:
+                            # special case where single interval in .cex is broken
+                            # across multiple intervals in .cha
+                            if (prev_interval[1] == words[0][4] and
+                                curr_interval[0] == words[0][5]):
+                                print "found broken interval: " + str(curr_interval)
+
+                            if ((curr_interval[0] == words[0][4] and
+                               curr_interval[1] == words[0][5]) or
+
+                                (prev_interval[1] == words[0][4] and
+                                curr_interval[0] == words[0][5])):
 
                                 output.write("\t")
 
