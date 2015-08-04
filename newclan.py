@@ -125,17 +125,19 @@ class ClanFile:
         silsubr_comment_ready = False
         regular_comment_ready = False
 
-        curr_interval = [None, None]
-        prev_interval = [None, None]
+        curr_interval = [0, 0]
+        prev_interval = [0, 0]
 
         broken_interval = None
 
         prev_line = ""
-        print grouped_words
+        #print grouped_words
         with open(self.its_path, "rU") as its_file:
             with open(self.out_path, "w") as output:
                 for index, line in enumerate(its_file):
-
+                    print "words: " + str(words)
+                    print "curr_interval: " + str(curr_interval)
+                    print "prev_interval: " + str(prev_interval)
                     # in the case where we have adjacent comments, we check against
                     # the last interval again, since it hasn't been updated yet (previous
                     # line was a comment too)
@@ -249,25 +251,25 @@ class ClanFile:
                             curr_interval[1] == words[0][5]) or
 
                             ((curr_interval[0] - 1) == words[0][4] and  # all the +/- 1 rounding errors
-                            (curr_interval[1] - 1) == words[0][5]) or
+                             (curr_interval[1] - 1) == words[0][5]) or
 
                             (curr_interval[0] == words[0][4] and
-                            (curr_interval[1] - 1) == words[0][5]) or
+                             (curr_interval[1] - 1) == words[0][5]) or
 
                             ((curr_interval[0] - 1) == words[0][4] and
-                            curr_interval[1] == words[0][5]) or
+                             curr_interval[1] == words[0][5]) or
 
-                            (curr_interval[0] + 1  == words[0][4] and
-                            (curr_interval[1] + 1) == words[0][5]) or
+                            (curr_interval[0] + 1 == words[0][4] and
+                             (curr_interval[1] + 1) == words[0][5]) or
 
-                            (curr_interval[0] + 1  == words[0][4] and
-                            curr_interval[1] == words[0][5]) or
+                            (curr_interval[0] + 1 == words[0][4] and
+                             curr_interval[1] == words[0][5]) or
 
-                            (curr_interval[0]  == words[0][4] and
-                            curr_interval[1] + 1== words[0][5]) or
+                            (curr_interval[0] == words[0][4] and
+                             (curr_interval[1] + 1) == words[0][5]) or
 
                             (prev_interval[1] == words[0][4] and    # broken interval condition
-                                curr_interval[0] == words[0][5])):
+                             curr_interval[0] == words[0][5])):
 
                             output.write(line_split[0] + "\t")
 
@@ -346,28 +348,28 @@ class ClanFile:
                                 print "found broken interval: " + str(curr_interval)
 
                             if ((curr_interval[0] == words[0][4] and
-                               curr_interval[1] == words[0][5]) or
+                                curr_interval[1] == words[0][5]) or
 
                                 ((curr_interval[0] - 1) == words[0][4] and  # all the +/- 1 rounding errors
-                                (curr_interval[1] - 1) == words[0][5]) or
+                                 (curr_interval[1] - 1) == words[0][5]) or
 
                                 (curr_interval[0] == words[0][4] and
-                                (curr_interval[1] - 1) == words[0][5]) or
+                                 (curr_interval[1] - 1) == words[0][5]) or
 
                                 ((curr_interval[0] - 1) == words[0][4] and
-                                curr_interval[1] == words[0][5]) or
+                                 curr_interval[1] == words[0][5]) or
 
-                                (curr_interval[0] + 1  == words[0][4] and
-                                (curr_interval[1] + 1) == words[0][5]) or
+                                ((curr_interval[0] + 1) == words[0][4] and
+                                 (curr_interval[1] + 1) == words[0][5]) or
 
-                                (curr_interval[0] + 1  == words[0][4] and
-                                curr_interval[1] == words[0][5]) or
+                                ((curr_interval[0] + 1) == words[0][4] and
+                                 curr_interval[1] == words[0][5]) or
 
-                                (curr_interval[0]  == words[0][4] and
-                                curr_interval[1] + 1== words[0][5])
+                                (curr_interval[0] == words[0][4] and
+                                 (curr_interval[1] + 1) == words[0][5]) or
 
                                 (prev_interval[1] == words[0][4] and
-                                curr_interval[0] == words[0][5])):
+                                 curr_interval[0] == words[0][5])):
 
                                 output.write("\t")
 
@@ -394,8 +396,11 @@ class ClanFile:
                             else:
                                 output.write(line)
 
+
         print "\n\n# of comments written: " + str(comment_written_cnt)
         print "total # of comments: " + str(len(self.comments))
+        print "# of words parsed: " + str(len(self.words))
+
     def check_words(self):
         """
         Makes sure formatting on entries is correct
@@ -441,7 +446,7 @@ class ClanFile:
                     result.append(temp_group)
             else:
                 temp_group.append(word)
-        print "result: " + str(result)
+        #print "result: " + str(result)
         return result
 
 def print_usage():
