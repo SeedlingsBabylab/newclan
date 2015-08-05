@@ -10,6 +10,6 @@ data/16_6/16_06.cex data/16_6/16_6.lena.cha output/16_6/16_6_test_merge.cha
 
 data/27_7/27_07.cex data/27_7/27_7.lena.cha output/27_7/27_7_test_merge.cha
 
-data/30_6/30_06.cex data/30_6/30_6.lena.cha output/30_6/30_6_test_merge.cha
+data/30_6/30_06.cex data/30_6/30_06_annot.cex data/30_6/30_6.lena.cha output/30_6/30_6_test_merge.cha
 
 data/10_6/10_06.cex data/10_6/10_6.lena.cha output/10_6/10_6_test_merge.cha

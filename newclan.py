@@ -10,8 +10,9 @@ participants = "@Participants:\tSIL Silence LENA, MAN Male_Adult_Near Male,  MAF
 \tElectronic_Sound_Near Media, TVF Electronic_Sound_Far Media\n"
 
 class ClanFile:
-    def __init__(self, clan_path, its_path, out_path):
-        self.path = clan_path
+    def __init__(self, orig_clanpath, annot_clanpath, its_path, out_path):
+        self.original = orig_clanpath
+        self.path = annot_clanpath
         self.its_path = its_path
         self.out_path = out_path
         self.id = os.path.split(self.path)[1][0:5]
@@ -43,6 +44,8 @@ class ClanFile:
 
         self.word_cnt_regx = re.compile(re9+re10+re11+re12+re13+re14,re.IGNORECASE|re.DOTALL)
 
+        if not self.check_intervals():
+            return
         self.parse_clan_words_comments()
         self.merge_its_and_clan()
 
@@ -53,6 +56,7 @@ class ClanFile:
         :return:
         """
         last_line = ""
+        multi_line = ""
         prev_interval = [None, None]
         curr_interval = [None, None]
 
@@ -60,6 +64,8 @@ class ClanFile:
             for index, line in enumerate(clan_file):
 
                 if line.startswith("*"):
+
+                    multi_line = ""
                     # parse out the line interval
                     interval_reg_result = self.interval_regx.search(line)
 
@@ -84,7 +90,19 @@ class ClanFile:
 
                 # this is for lines that wrapped around past a single line
                 if line.startswith("\t"):
-                    line = last_line + line
+                    # parse out the line interval
+                    interval_reg_result = self.interval_regx.search(line)
+
+                    # if the line starts with a "\t" and there is no
+                    # interval on the line (regex search returned None),
+                    # it must be on a following line. We save the previous
+                    # line and move forward
+                    if interval_reg_result is None:
+                        multi_line += line
+                        continue
+
+                    line = last_line + multi_line + line
+                    print line
 
                 # if there are "word &=d_y_BRO" entries within the line, parse them out
                 entries = re.findall(self.entry_regx, line)
@@ -135,9 +153,9 @@ class ClanFile:
         with open(self.its_path, "rU") as its_file:
             with open(self.out_path, "w") as output:
                 for index, line in enumerate(its_file):
-                    print "words: " + str(words)
-                    print "curr_interval: " + str(curr_interval)
-                    print "prev_interval: " + str(prev_interval)
+                    #print "words: " + str(words)
+                    #print "curr_interval: " + str(curr_interval)
+                    #print "prev_interval: " + str(prev_interval)
                     # in the case where we have adjacent comments, we check against
                     # the last interval again, since it hasn't been updated yet (previous
                     # line was a comment too)
@@ -449,13 +467,122 @@ class ClanFile:
         #print "result: " + str(result)
         return result
 
+    def check_intervals(self):
+        parse_orig_cex(self.original)
+        parse_annot_cex(self.path)
+
+        result = compare_intervals(orig_cex_intervals, annot_cex_intervals)
+        return result
+
+
+
+# code from clan_intervals:
+#
+# (makes sure intervals haven't been changed
+#  between original .cex and the annotated .cex)
+#
+
+interval_regx = re.compile("(\025\d+_\d+)")
+
+orig_cex_intervals = []
+annot_cex_intervals = []
+
+adjusted_timestamps = []    # timestamps that were rewritten because of silences/subregions
+
+def parse_orig_cex(path):
+    with open(path, "rU") as file:
+        for index, line in enumerate(file):
+            interv_reg_result = interval_regx.findall(line)
+            if interv_reg_result:
+                if len(interv_reg_result) > 1:
+                    print "More than one interval on a line:  line# " + str(index)
+                    return
+                for interval_str in interv_reg_result:
+                    interval = [None, None]
+                    interval_split = interval_str.replace("\025", "").split("_")
+                    interval[0] = int(interval_split[0])
+                    interval[1] = int(interval_split[1])
+                    orig_cex_intervals.append(interval)
+            else:
+                continue
+
+def parse_annot_cex(path):
+    with open(path, "rU") as file:
+        for index, line in enumerate(file):
+            if line.startswith("%com:") and\
+                ("silence" in line) or ("subregion" in line):
+                adjusted_timestamps.append(annot_cex_intervals[-1])
+            interv_reg_result = interval_regx.findall(line)
+            if interv_reg_result:
+                if len(interv_reg_result) > 1:
+                    print "More than one interval on a line:  line# " + str(index)
+                    return
+                for interval_str in interv_reg_result:
+                    interval = [None, None]
+                    interval_split = interval_str.replace("\025", "").split("_")
+                    interval[0] = int(interval_split[0])
+                    interval[1] = int(interval_split[1])
+                    annot_cex_intervals.append(interval)
+            else:
+                continue
+
+def compare_intervals(orig_cex_intervals, annot_cex_intervals):
+    problems = []
+    off_by_one_count = 0
+
+    for index, interval in enumerate(orig_cex_intervals):
+
+        plus_plus = [interval[0]+1, interval[1]+1]
+        plus_same = [interval[0]+1, interval[1]]
+        same_plus = [interval[0], interval[1]+1]
+
+        minus_minus = [interval[0]-1, interval[1]-1]
+        minus_same = [interval[0]-1, interval[1]]
+        same_minus = [interval[0], interval[1]-1]
+
+        off_by_ones = (plus_plus, plus_same, same_plus,     #  + 1
+                       minus_minus, minus_same, same_minus) #  - 1
+
+        if interval not in annot_cex_intervals:
+            off_by_one = False
+            adjusted_by_comment = False
+
+            # check for off by one
+            for interv in off_by_ones:
+                if interv in annot_cex_intervals:
+                    print "found off by one: " + str(interv)
+                    off_by_one = True
+                    off_by_one_count += 1
+
+            # check for rewritten timestamp because of silence/subregion comment
+            if interval[0] in [intrv[0] for intrv in adjusted_timestamps]:
+                adjusted_by_comment = True
+
+            if not (off_by_one or adjusted_by_comment):
+                problems.append(interval)
+
+    if len(problems) > 0:
+        print "\nThere were some discrepancies between the original cex file"
+        print "and the annotated version. The intervals in the annotated"
+        print "version might have been altered."
+
+        print "\n# off by ones: " + str(off_by_one_count)
+        print "# otherwise inconsistent intervals: " + str(len(problems))
+        print "\nproblem intervals: " + str(problems)
+        return False
+    return True
+
+
 def print_usage():
     print "USAGE: \n"
-    print "python newclan.py input_clan its_skeleton output"
+    print "python newclan.py original_cex annotated_cex its_skeleton output"
 
 if __name__ == "__main__":
 
     if len(sys.argv) < 3:
         print_usage()
 
-    clan_file = ClanFile(sys.argv[1], sys.argv[2], sys.argv[3])
+    clan_file = ClanFile(sys.argv[1], # original cex
+                         sys.argv[2], # annotated cex
+                         sys.argv[3], # its skeleton cha
+                         sys.argv[4]) # output path
