@@ -121,18 +121,12 @@ class ClanFile:
                 if line.startswith("%com:") and ("|" not in line):
                     self.comments.append((line, curr_interval[0], curr_interval[1]))
 
-        #print self.words
         self.grouped_words = self.chunk_words(self.words)
-        #print self.grouped_words
-        #print self.comments
         self.check_words()
 
     def merge_its_and_clan(self):
         comment_written_cnt = 0
         grouped_words = collections.deque(self.grouped_words)
-        #print self.words
-        #print self.grouped_words
-        #print grouped_words
         words = grouped_words.popleft()
 
         comments = collections.deque(self.comments)
@@ -149,7 +143,6 @@ class ClanFile:
         broken_interval = None
 
         prev_line = ""
-        #print grouped_words
         with open(self.its_path, "rU") as its_file:
             with open(self.out_path, "w") as output:
                 for index, line in enumerate(its_file):
@@ -393,11 +386,19 @@ class ClanFile:
         parse_orig_cex(self.original)
         parse_annot_cex(self.path)
 
-        result = compare_intervals(orig_cex_intervals, annot_cex_intervals)
+        result = compare_intervals(self.id, orig_cex_intervals, annot_cex_intervals)
         return result
 
     def intervals_match(self, prev_interval, curr_interval, words_interval):
+        """
+        Checks if the current interval being processed is matched with
+        the current word(s) that's waiting to be written in.
 
+        :param prev_interval: previous interval we just passed
+        :param curr_interval: current interval being handled
+        :param words_interval: the "words" entry that's been popped off the deque
+        :return: True if matched, False if not
+        """
         if ((curr_interval[0] == words_interval[0][4] and   # perfect match
             curr_interval[1] == words_interval[0][5]) or
 
@@ -523,10 +524,12 @@ def parse_annot_cex(path):
             else:
                 continue
 
-def compare_intervals(orig_cex_intervals, annot_cex_intervals):
+def compare_intervals(id, orig_cex_intervals, annot_cex_intervals):
     problems = []
     off_by_one_count = 0
+    off_by_15_count = 0
     off_by_25_count = 0
+
     for index, interval in enumerate(orig_cex_intervals):
 
         # +/- 1
@@ -537,6 +540,16 @@ def compare_intervals(orig_cex_intervals, annot_cex_intervals):
         minus_minus = [interval[0]-1, interval[1]-1]
         minus_same = [interval[0]-1, interval[1]]
         same_minus = [interval[0], interval[1]-1]
+
+        # +/- 15
+        plus_plus15 = [interval[0]+15, interval[1]+15]
+        plus_same15 = [interval[0]+15, interval[1]]
+        same_plus15 = [interval[0], interval[1]+15]
+
+        minus_minus15 = [interval[0]-15, interval[1]-15]
+        minus_same15 = [interval[0]-15, interval[1]]
+        same_minus15 = [interval[0], interval[1]-15]
+
 
         # +/- 25
         plus_plus25 = [interval[0]+25, interval[1]+25]
@@ -552,11 +565,15 @@ def compare_intervals(orig_cex_intervals, annot_cex_intervals):
         off_by_ones = (plus_plus, plus_same, same_plus,     #  + 1
                        minus_minus, minus_same, same_minus) #  - 1
 
+        off_by_15s = (plus_plus15, plus_same15, same_plus15,        #  + 15
+                     minus_minus15, minus_same15, same_minus15)     # - 15
+
         off_by_25s = (plus_plus25, plus_same25, same_plus25,       #  + 25
-                     minus_minus25, minus_same25, same_minus25)   #  - 25
+                     minus_minus25, minus_same25, same_minus25)    #  - 25
 
         if interval not in annot_cex_intervals:
             off_by_one = False
+            off_by_15 = False
             off_by_25 = False
             adjusted_by_comment = False
 
@@ -567,17 +584,24 @@ def compare_intervals(orig_cex_intervals, annot_cex_intervals):
                     off_by_one = True
                     off_by_one_count += 1
 
+            for interv in off_by_15s:
+                if interv in annot_cex_intervals:
+                    off_by_15 = True
+                    off_by_15_count += 1
+                    print "found off by 15:  {}".format(interv)
+
             for interv in off_by_25s:
                 if interv in annot_cex_intervals:
                     off_by_25 = True
                     off_by_25_count += 1
-                    print "found off by 25"
+                    print "found off by 25:  {}".format(interv)
 
             # check for rewritten timestamp because of silence/subregion comment
             if interval[0] in [intrv[0] for intrv in adjusted_timestamps]:
                 adjusted_by_comment = True
 
             if not (off_by_one or
+                    off_by_15 or
                     off_by_25 or
                     adjusted_by_comment):
                 problems.append(interval)
@@ -591,6 +615,11 @@ def compare_intervals(orig_cex_intervals, annot_cex_intervals):
         print "\n# off by 25: " + str(off_by_25_count)
         print "# otherwise inconsistent intervals: " + str(len(problems))
         print "\nproblem intervals: " + str(problems)
+
+        with open("error_files/"+ id +"_errors.txt", "w") as error_file:
+            for problem_interval in problems:
+                error_file.write(str(problem_interval) + "\n")
+
         return False
 
     return True
@@ -598,12 +627,27 @@ def compare_intervals(orig_cex_intervals, annot_cex_intervals):
 
 def print_usage():
     print "USAGE: \n"
-    print "python newclan.py original_cex annotated_cex its_skeleton output"
+    print "python newclan.py [original_cex] [annotated_cex] [its_skeleton output]\n"
+
+
+original_cex = ""
+annotated_cex = ""
+cha_skeleton = ""
+output_path = ""
+error_path = ""
 
 if __name__ == "__main__":
 
-    if len(sys.argv) < 3:
+    if len(sys.argv) < 5:
         print_usage()
+        sys.exit(0)
+
+    original_cex  = sys.argv[1] # original cex
+    annotated_cex = sys.argv[2] # annotated cex
+    cha_skeleton  = sys.argv[3] # its skeleton cha
+    output_path   = sys.argv[4]  # output path
+
+
 
     clan_file = ClanFile(sys.argv[1], # original cex
                          sys.argv[2], # annotated cex

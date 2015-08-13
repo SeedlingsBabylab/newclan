@@ -4,7 +4,7 @@ data/11_6/11_06.cex data/11_6/11_06.lena.cha output/11_6/11_06_test_merge.cha
 
 data/12_7/12_07.cex data/12_7/12_07.lena.cha output/12_7/12_07_test_merge.cha
 
-data/8_6/8_06.cex data/8_6/8_6.lena.cha output/8_6/8_06_test_merge.cha
+data/8_6/08_06_silences_added.cex data/8_6/8_06.cex data/8_6/8_6.lena.cha output/8_6/8_06_test_merge.cha
 
 data/16_6/16_06.cex data/16_6/16_6.lena.cha output/16_6/16_6_test_merge.cha
 
@@ -12,4 +12,4 @@ data/27_7/27_07.cex data/27_7/27_7.lena.cha output/27_7/27_7_test_merge.cha
 
 data/30_6/30_06.cex data/30_6/30_06_annot.cex data/30_6/30_6.lena.cha output/30_6/30_6_test_merge.cha
 
-data/10_6/10_06.cex data/10_6/10_06_silences_added.cex data/10_6/10_6.lena.cha output/10_6/10_6_test_merge.cha
+data/10_6/10_06_silences_added.cex data/10_6/10_06.cex data/10_6/10_6.lena.cha output/10_6/10_6_test_merge.cha
