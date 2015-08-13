@@ -153,9 +153,6 @@ class ClanFile:
         with open(self.its_path, "rU") as its_file:
             with open(self.out_path, "w") as output:
                 for index, line in enumerate(its_file):
-                    #print "words: " + str(words)
-                    #print "curr_interval: " + str(curr_interval)
-                    #print "prev_interval: " + str(prev_interval)
                     # in the case where we have adjacent comments, we check against
                     # the last interval again, since it hasn't been updated yet (previous
                     # line was a comment too)
@@ -168,37 +165,27 @@ class ClanFile:
                             curr_interval[1] = curr_comment[2]
 
                             sil_subr_comment = re.sub(r"%com:\s+", r"%xcom:\t", curr_comment[0])
-                            #print "sil_subr_comment: " + sil_subr_comment
-                            #sil_subr_comment = curr_comment[0].replace("%com", "%xcom")
 
                             silsubr_comment_ready = True
                             if comments:
                                 curr_comment = comments.popleft()
-                            #print "curr_comment: " + str(curr_comment)
                         else:
 
                             regular_comment = re.sub(r"%com:\s+", r"%xcom:\t", curr_comment[0])
-                            #print "regular comment: " + regular_comment
-                            #regular_comment = curr_comment[0].replace("%com", "%xcom")
 
                             regular_comment_ready = True
                             if comments:
                                 curr_comment = comments.popleft()
-                            #print "curr_comment: " + str(curr_comment)
 
                     # if subregion/silence/regular comment is ready to write,
                     # write it out and reset the flag
                     if silsubr_comment_ready:
                         output.write(sil_subr_comment.replace("\t ", "\t"))
                         comment_written_cnt += 1
-                        #print "wrote subregion:  " + sil_subr_comment
-                        #print "curr_interval: " + str(curr_interval)
                         silsubr_comment_ready = False
                     if regular_comment_ready:
                         output.write(regular_comment)
                         comment_written_cnt += 1
-                        #print "wrote regular comment:  " + regular_comment
-                        #print "curr_interval: " + str(curr_interval)
                         regular_comment_ready = False
 
                     # we skip over the birth date header
@@ -215,8 +202,6 @@ class ClanFile:
                         output.write(line)
                     elif line.startswith("*"):
                         line_split = line.split()
-                        #print words
-                        #print curr_comment
                         # rearrange previous and current intervals
                         prev_interval[0] = curr_interval[0]
                         prev_interval[1] = curr_interval[1]
@@ -231,32 +216,18 @@ class ClanFile:
                         if curr_interval[0] == curr_comment[1]:
                             if "subregion" in curr_comment[0] or\
                                  "silence" in curr_comment[0]:
+
                                 curr_interval[1] = curr_comment[2]
-
-
                                 sil_subr_comment = re.sub(r"%com:\s+", r"%xcom:\t", curr_comment[0])
-                                #print "sil_subr_comment: " + sil_subr_comment
-
-                                #sil_subr_comment = curr_comment[0].replace("%com", "%xcom")
-
-
                                 silsubr_comment_ready = True
                                 if comments:
                                     curr_comment = comments.popleft()
-                                #print "curr_comment: " + str(curr_comment)
-
                             else:
-                                #output.write(curr_comment[0].replace("%com", "%xcom"))
 
                                 regular_comment = re.sub(r"%com:\s+", r"%xcom:\t", curr_comment[0])
-                                #print "regular comment: " + regular_comment
-
-                                #regular_comment = curr_comment[0].replace("%com", "%xcom")
                                 regular_comment_ready = True
                                 if comments:
                                     curr_comment = comments.popleft()
-                                #print "curr_comment: " + str(curr_comment)
-
 
                         # special case where single interval in .cex is broken
                         # across multiple intervals in .cha
@@ -264,30 +235,7 @@ class ClanFile:
                             curr_interval[0] == words[0][5]):
                             print "found broken interval: " + str(curr_interval)
 
-
-                        if ((curr_interval[0] == words[0][4] and    # correct case
-                            curr_interval[1] == words[0][5]) or
-
-                            ((curr_interval[0] - 1) == words[0][4] and  # all the +/- 1 rounding errors
-                             (curr_interval[1] - 1) == words[0][5]) or
-
-                            (curr_interval[0] == words[0][4] and
-                             (curr_interval[1] - 1) == words[0][5]) or
-
-                            ((curr_interval[0] - 1) == words[0][4] and
-                             curr_interval[1] == words[0][5]) or
-
-                            (curr_interval[0] + 1 == words[0][4] and
-                             (curr_interval[1] + 1) == words[0][5]) or
-
-                            (curr_interval[0] + 1 == words[0][4] and
-                             curr_interval[1] == words[0][5]) or
-
-                            (curr_interval[0] == words[0][4] and
-                             (curr_interval[1] + 1) == words[0][5]) or
-
-                            (prev_interval[1] == words[0][4] and    # broken interval condition
-                             curr_interval[0] == words[0][5])):
+                        if (self.intervals_match(prev_interval, curr_interval, words)):
 
                             output.write(line_split[0] + "\t")
 
@@ -351,13 +299,11 @@ class ClanFile:
                                     sil_subr_comment = curr_comment[0].replace("%com", "%xcom")
                                     silsubr_comment_ready = True
                                     curr_comment = comments.popleft()
-                                    #print "curr_comment: " + str(curr_comment)
 
                                 else:
                                     regular_comment = curr_comment[0].replace("%com", "%xcom")
                                     regular_comment_ready = True
                                     curr_comment = comments.popleft()
-                                    #print "curr_comment: " + str(curr_comment)
 
                             # special case where single interval in .cex is broken
                             # across multiple intervals in .cha
@@ -365,29 +311,7 @@ class ClanFile:
                                 curr_interval[0] == words[0][5]):
                                 print "found broken interval: " + str(curr_interval)
 
-                            if ((curr_interval[0] == words[0][4] and
-                                curr_interval[1] == words[0][5]) or
-
-                                ((curr_interval[0] - 1) == words[0][4] and  # all the +/- 1 rounding errors
-                                 (curr_interval[1] - 1) == words[0][5]) or
-
-                                (curr_interval[0] == words[0][4] and
-                                 (curr_interval[1] - 1) == words[0][5]) or
-
-                                ((curr_interval[0] - 1) == words[0][4] and
-                                 curr_interval[1] == words[0][5]) or
-
-                                ((curr_interval[0] + 1) == words[0][4] and
-                                 (curr_interval[1] + 1) == words[0][5]) or
-
-                                ((curr_interval[0] + 1) == words[0][4] and
-                                 curr_interval[1] == words[0][5]) or
-
-                                (curr_interval[0] == words[0][4] and
-                                 (curr_interval[1] + 1) == words[0][5]) or
-
-                                (prev_interval[1] == words[0][4] and
-                                 curr_interval[0] == words[0][5])):
+                            if (self.intervals_match(prev_interval, curr_interval, words)):
 
                                 output.write("\t")
 
@@ -431,7 +355,6 @@ class ClanFile:
             if "+" in entry[0] and entry[0][0].isupper():
                 line = entry[0].lower()
                 line = line[0].upper() + line[1:]
-                #print "line: " + line
                 entry[0] = line
 
     def chunk_words(self, words):
@@ -464,7 +387,6 @@ class ClanFile:
                     result.append(temp_group)
             else:
                 temp_group.append(word)
-        #print "result: " + str(result)
         return result
 
     def check_intervals(self):
@@ -473,6 +395,81 @@ class ClanFile:
 
         result = compare_intervals(orig_cex_intervals, annot_cex_intervals)
         return result
+
+    def intervals_match(self, prev_interval, curr_interval, words_interval):
+
+        if ((curr_interval[0] == words_interval[0][4] and   # perfect match
+            curr_interval[1] == words_interval[0][5]) or
+
+
+            # all the possible +/- 1ms rounding errors
+            ((curr_interval[0] - 1) == words_interval[0][4] and
+             (curr_interval[1] - 1) == words_interval[0][5]) or
+
+            (curr_interval[0] == words_interval[0][4] and
+             (curr_interval[1] - 1) == words_interval[0][5]) or
+
+            ((curr_interval[0] - 1) == words_interval[0][4] and
+             curr_interval[1] == words_interval[0][5]) or
+
+            ((curr_interval[0] + 1) == words_interval[0][4] and
+             (curr_interval[1] + 1) == words_interval[0][5]) or
+
+            ((curr_interval[0] + 1) == words_interval[0][4] and
+             curr_interval[1] == words_interval[0][5]) or
+
+            (curr_interval[0] == words_interval[0][4] and
+             (curr_interval[1] + 1) == words_interval[0][5]) or
+
+
+            # all the +/- 25ms errors
+            ((curr_interval[0] - 25) == words_interval[0][4] and
+             (curr_interval[1] - 25) == words_interval[0][5]) or
+
+            (curr_interval[0] == words_interval[0][4] and
+             (curr_interval[1] - 25) == words_interval[0][5]) or
+
+            ((curr_interval[0] - 25) == words_interval[0][4] and
+             curr_interval[1] == words_interval[0][5]) or
+
+            ((curr_interval[0] + 25) == words_interval[0][4] and
+             (curr_interval[1] + 25) == words_interval[0][5]) or
+
+            ((curr_interval[0] + 25) == words_interval[0][4] and
+             curr_interval[1] == words_interval[0][5]) or
+
+            (curr_interval[0] == words_interval[0][4] and
+             (curr_interval[1] + 25) == words_interval[0][5]) or
+
+
+            # all the +/- 15ms errors
+            ((curr_interval[0] - 15) == words_interval[0][4] and
+             (curr_interval[1] - 15) == words_interval[0][5]) or
+
+            (curr_interval[0] == words_interval[0][4] and
+             (curr_interval[1] - 15) == words_interval[0][5]) or
+
+            ((curr_interval[0] - 15) == words_interval[0][4] and
+             curr_interval[1] == words_interval[0][5]) or
+
+            ((curr_interval[0] + 15) == words_interval[0][4] and
+             (curr_interval[1] + 15) == words_interval[0][5]) or
+
+            ((curr_interval[0] + 15) == words_interval[0][4] and
+             curr_interval[1] == words_interval[0][5]) or
+
+            (curr_interval[0] == words_interval[0][4] and
+             (curr_interval[1] + 15) == words_interval[0][5]) or
+
+            # single .cex interval broken across 2 .cha intervals
+            (prev_interval[1] == words_interval[0][4] and
+             curr_interval[0] == words_interval[0][5])):
+            return True
+        else:
+            return False
+
+
+
 
 
 
@@ -529,9 +526,10 @@ def parse_annot_cex(path):
 def compare_intervals(orig_cex_intervals, annot_cex_intervals):
     problems = []
     off_by_one_count = 0
-
+    off_by_25_count = 0
     for index, interval in enumerate(orig_cex_intervals):
 
+        # +/- 1
         plus_plus = [interval[0]+1, interval[1]+1]
         plus_same = [interval[0]+1, interval[1]]
         same_plus = [interval[0], interval[1]+1]
@@ -540,11 +538,26 @@ def compare_intervals(orig_cex_intervals, annot_cex_intervals):
         minus_same = [interval[0]-1, interval[1]]
         same_minus = [interval[0], interval[1]-1]
 
+        # +/- 25
+        plus_plus25 = [interval[0]+25, interval[1]+25]
+        plus_same25 = [interval[0]+25, interval[1]]
+        same_plus25 = [interval[0], interval[1]+25]
+
+        minus_minus25 = [interval[0]-25, interval[1]-25]
+        minus_same25 = [interval[0]-25, interval[1]]
+        same_minus25 = [interval[0], interval[1]-25]
+
+
+
         off_by_ones = (plus_plus, plus_same, same_plus,     #  + 1
                        minus_minus, minus_same, same_minus) #  - 1
 
+        off_by_25s = (plus_plus25, plus_same25, same_plus25,       #  + 25
+                     minus_minus25, minus_same25, same_minus25)   #  - 25
+
         if interval not in annot_cex_intervals:
             off_by_one = False
+            off_by_25 = False
             adjusted_by_comment = False
 
             # check for off by one
@@ -554,11 +567,19 @@ def compare_intervals(orig_cex_intervals, annot_cex_intervals):
                     off_by_one = True
                     off_by_one_count += 1
 
+            for interv in off_by_25s:
+                if interv in annot_cex_intervals:
+                    off_by_25 = True
+                    off_by_25_count += 1
+                    print "found off by 25"
+
             # check for rewritten timestamp because of silence/subregion comment
             if interval[0] in [intrv[0] for intrv in adjusted_timestamps]:
                 adjusted_by_comment = True
 
-            if not (off_by_one or adjusted_by_comment):
+            if not (off_by_one or
+                    off_by_25 or
+                    adjusted_by_comment):
                 problems.append(interval)
 
     if len(problems) > 0:
@@ -567,9 +588,11 @@ def compare_intervals(orig_cex_intervals, annot_cex_intervals):
         print "version might have been altered."
 
         print "\n# off by ones: " + str(off_by_one_count)
+        print "\n# off by 25: " + str(off_by_25_count)
         print "# otherwise inconsistent intervals: " + str(len(problems))
         print "\nproblem intervals: " + str(problems)
         return False
+
     return True
 
 
