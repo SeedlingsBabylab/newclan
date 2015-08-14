@@ -621,20 +621,18 @@ def compare_intervals(id, orig_cex_intervals, annot_cex_intervals):
                 error_file.write(str(problem_interval) + "\n")
 
         return False
-
     return True
-
 
 def print_usage():
     print "USAGE: \n"
-    print "python newclan.py [original_cex] [annotated_cex] [its_skeleton output]\n"
+    print "python newclan.py [original_cex] [annotated_cex] [its_skeleton] [output_dir]\n"
 
 
-original_cex = ""
-annotated_cex = ""
-cha_skeleton = ""
-output_path = ""
-error_path = ""
+# original_cex = ""
+# annotated_cex = ""
+# cha_skeleton = ""
+# output_path = ""
+# error_path = ""
 
 if __name__ == "__main__":
 
@@ -642,10 +640,10 @@ if __name__ == "__main__":
         print_usage()
         sys.exit(0)
 
-    original_cex  = sys.argv[1] # original cex
-    annotated_cex = sys.argv[2] # annotated cex
-    cha_skeleton  = sys.argv[3] # its skeleton cha
-    output_path   = sys.argv[4]  # output path
+    # original_cex  = sys.argv[1] # original cex
+    # annotated_cex = sys.argv[2] # annotated cex
+    # cha_skeleton  = sys.argv[3] # its skeleton cha
+    # output_path   = sys.argv[4]  # output path
 
 
 
