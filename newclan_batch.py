@@ -17,7 +17,7 @@ silences_files = []
 commands = {}
 
 def build_command_set():
-    for i in range(50):
+    for i in range(1,50):
         if i < 10:
             commands["0{}_06".format(i)] = [None] * 4
             commands["0{}_07".format(i)] = [None] * 4
@@ -32,39 +32,43 @@ def build_command_set():
             commands["0{}_16".format(i)] = [None] * 4
             commands["0{}_17".format(i)] = [None] * 4
             commands["0{}_18".format(i)] = [None] * 4
-
-        commands["{}_06".format(i)] = [None] * 4
-        commands["{}_07".format(i)] = [None] * 4
-        commands["{}_08".format(i)] = [None] * 4
-        commands["{}_09".format(i)] = [None] * 4
-        commands["{}_10".format(i)] = [None] * 4
-        commands["{}_11".format(i)] = [None] * 4
-        commands["{}_12".format(i)] = [None] * 4
-        commands["{}_13".format(i)] = [None] * 4
-        commands["{}_14".format(i)] = [None] * 4
-        commands["{}_15".format(i)] = [None] * 4
-        commands["{}_16".format(i)] = [None] * 4
-        commands["{}_17".format(i)] = [None] * 4
-        commands["{}_18".format(i)] = [None] * 4
+        else:
+            commands["{}_06".format(i)] = [None] * 4
+            commands["{}_07".format(i)] = [None] * 4
+            commands["{}_08".format(i)] = [None] * 4
+            commands["{}_09".format(i)] = [None] * 4
+            commands["{}_10".format(i)] = [None] * 4
+            commands["{}_11".format(i)] = [None] * 4
+            commands["{}_12".format(i)] = [None] * 4
+            commands["{}_13".format(i)] = [None] * 4
+            commands["{}_14".format(i)] = [None] * 4
+            commands["{}_15".format(i)] = [None] * 4
+            commands["{}_16".format(i)] = [None] * 4
+            commands["{}_17".format(i)] = [None] * 4
+            commands["{}_18".format(i)] = [None] * 4
 
 def set_outputs():
     for key, value in commands.iteritems():
         if value[1] == None:
             continue
         silences_split = os.path.split(value[1])
-        merge_path = os.path.join(silences_split[0], silences_split[1][0:5] + "_merged.cha")
+        merge_path = os.path.join(silences_split[0], silences_split[1][0:5] + "_newclan_merged.cha")
         value[3] = merge_path
 
 def run_batch_newclan(commands):
     base = ["python", "newclan.py"]
-    with open("not_processed.txt", "w") as errors:
-        for key, value in commands.iteritems():
-            if None in value:
-                errors.write(key+"\n")
-                continue
-            else:
-                command = base + value
-                print "command: {}".format(command)
+    with open("not_batch_processed.txt", "w") as errors:
+        with open("batch_processed.txt", "w") as processed:
+            for key, value in commands.iteritems():
+                if None in value:
+                    errors.write(key+"\n")
+                    continue
+                else:
+                    command = base + value
+                    print "command: {}".format(command)
+                    pipe = sp.Popen(command, stdout=sp.PIPE, bufsize=10**8)
+                    pipe.communicate()  # blocks until the subprocess in complete
+                    processed.write(key+"\n")
 
 if __name__ == "__main__":
 
@@ -76,29 +80,18 @@ if __name__ == "__main__":
 
     for root, dirs, files in os.walk("/Volumes/seedlings/Subject_Files"):
 
-
-        # print "root:    " + str(root)
-        # print "dirs:    " + str(dirs)
-        # print "files:   " + str(files)
-        # print
-
-
         if os.path.split(root)[1] == "Audio_Annotation":
             for file in files:
                 if "consensus_final" in file and not file.startswith("."):
                     commands[file[0:5]][1] = os.path.join(root, file)
-                    #consensus_files.append(file)
-                    #print "consensus_files so far: {}".format(consensus_files)
+
         if os.path.split(root)[1] == "Audio_Files":
             for file in files:
                 if "silences_added" in file and not file.startswith("."):
                     commands[file[0:5]][0] = os.path.join(root, file)
-                    #silences_files.append(file)
                 if ".lena.cha" in file and not file.startswith("."):
                     commands[file[0:5]][2] = os.path.join(root, file)
-                # if ".cex" in file:
-                #     all_files.append(file)
-                #     print "all_files so far: " + str(all_files) + "\n\n"
+
 
     print "done with directory scan....\n"
     set_outputs()
