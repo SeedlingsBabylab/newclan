@@ -68,7 +68,7 @@ def run_batch_newclan(commands):
                     print "command: {}".format(command)
                     pipe = sp.Popen(command, stdout=sp.PIPE, bufsize=10**8)
                     pipe.communicate()  # blocks until the subprocess in complete
-                    processed.write(key+"\n")
+                    processed.write(key+":\toutput_path: {}\n".format(command[5]))
 
 if __name__ == "__main__":
 

@@ -1,3 +1,6 @@
-15_06
-04_11
-09_08
+10_06:	output_path: /Volumes/seedlings/Subject_Files/10_7-11-2014/10_06/Home_Visit/Coding/Audio_Annotation/10_06_newclan_merged.cha
+15_06:	output_path: /Volumes/seedlings/Subject_Files/15_8-14-2014/15_06/Home_Visit/Coding/Audio_Annotation/15_06_newclan_merged.cha
+04_11:	output_path: /Volumes/seedlings/Subject_Files/04_06-26-2014/04_11/Home_Visit/Coding/Audio_Annotation/04_11_newclan_merged.cha
+08_06:	output_path: /Volumes/seedlings/Subject_Files/08_07-02-2014/08_06/Home_Visit/Coding/Audio_Annotation/08_06_newclan_merged.cha
+09_08:	output_path: /Volumes/seedlings/Subject_Files/09_7-14-2014/09_08/Home_Visit/Coding/Audio_Annotation/09_08_newclan_merged.cha
+07_06:	output_path: /Volumes/seedlings/Subject_Files/07_06-30-2014/07_06/Home_Visit/Coding/Audio_Annotation/07_06_newclan_merged.cha
