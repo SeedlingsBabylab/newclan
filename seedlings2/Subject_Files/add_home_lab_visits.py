@@ -24,11 +24,6 @@ if __name__ == "__main__":
                 os.mkdir(os.path.join(root,directory,"Home_Visit/Analysis/Video_Analysis"))
 
 
-
-
-
-
-
                 #
                 # audio_analysis_leaf_path = os.path.join(root, directory, "Home_Visit/Analysis/Audio_Analysis")
                 # video_analysis_leaf_path = os.path.join(root, directory, "Home_Visit/Analysis/Video_Analysis")

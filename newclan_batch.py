@@ -16,6 +16,8 @@ silences_files = []
 # (e.g. '01_06') and command arguments for values
 commands = {}
 
+files_processed_count = 0
+
 def build_command_set():
     for i in range(1,50):
         if i < 10:
@@ -55,7 +57,9 @@ def set_outputs():
         merge_path = os.path.join(silences_split[0], silences_split[1][0:5] + "_newclan_merged.cha")
         value[3] = merge_path
 
+
 def run_batch_newclan(commands):
+    global files_processed_count
     base = ["python", "newclan.py"]
     with open("not_batch_processed.txt", "w") as errors:
         with open("batch_processed.txt", "w") as processed:
@@ -65,10 +69,12 @@ def run_batch_newclan(commands):
                     continue
                 else:
                     command = base + value
-                    print "command: {}".format(command)
+                    abbrev_command = [os.path.split(element)[1] for element in command]
+                    print "command: {}".format(abbrev_command)
                     pipe = sp.Popen(command, stdout=sp.PIPE, bufsize=10**8)
                     pipe.communicate()  # blocks until the subprocess in complete
-                    processed.write(key+":\toutput_path: {}\n".format(command[5]))
+                    processed.write(key+":\tcommand: {}\n".format(abbrev_command))
+                    files_processed_count += 1
 
 if __name__ == "__main__":
 
@@ -76,18 +82,35 @@ if __name__ == "__main__":
     # and reserve a 4 item list as its value (for the 4 arguments
     # required by newclan.py)
 
+    print "Building command set...\n"
     build_command_set()
+
+    print "Traversing Subject_Files for files...\n\n"
 
     for root, dirs, files in os.walk("/Volumes/seedlings/Subject_Files"):
 
         if os.path.split(root)[1] == "Audio_Annotation":
             for file in files:
-                if "consensus_final" in file and not file.startswith("."):
+                if "consensus_final" in file and not file.startswith(".") and ".cex" in file:
+                    commands[file[0:5]][1] = os.path.join(root, file)
+                    continue
+                if "consensus" in file and not file.startswith(".") and ".cex" in file:
+                    commands[file[0:5]][1] = os.path.join(root, file)
+                    continue
+                if "_final" in file and not file.startswith(".") and ".cex" in file:
                     commands[file[0:5]][1] = os.path.join(root, file)
 
         if os.path.split(root)[1] == "Audio_Files":
             for file in files:
                 if "silences_added" in file and not file.startswith("."):
+                    if commands[file[0:5]][0] is not None:
+                        if "subregions" in commands[file[0:5]][0]:
+                            continue
+                        else:
+                            commands[file[0:5]][0] = os.path.join(root, file)
+                    else:
+                        commands[file[0:5]][0] = os.path.join(root, file)
+                if "subregions" in file and not file.startswith(".") and ".cex" in file:
                     commands[file[0:5]][0] = os.path.join(root, file)
                 if ".lena.cha" in file and not file.startswith("."):
                     commands[file[0:5]][2] = os.path.join(root, file)
@@ -100,4 +123,6 @@ if __name__ == "__main__":
     print "running batch newclan.py on available files....\n\n"
 
     run_batch_newclan(commands)
+
+    print "Total # of clan files converted: {}".format(files_processed_count)
 
