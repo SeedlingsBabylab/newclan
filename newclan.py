@@ -296,7 +296,8 @@ class ClanFile:
                                 else:
                                     regular_comment = curr_comment[0].replace("%com", "%xcom")
                                     regular_comment_ready = True
-                                    curr_comment = comments.popleft()
+                                    if comments:
+                                        curr_comment = comments.popleft()
 
                             # special case where single interval in .cex is broken
                             # across multiple intervals in .cha

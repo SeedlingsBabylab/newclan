@@ -18,6 +18,8 @@ commands = {}
 
 files_processed_count = 0
 
+total_files = 0
+
 def build_command_set():
     for i in range(1,50):
         if i < 10:
@@ -49,6 +51,16 @@ def build_command_set():
             commands["{}_17".format(i)] = [None] * 4
             commands["{}_18".format(i)] = [None] * 4
 
+def count_files():
+    global total_files
+    for key, value in commands:
+        if key[0:2] == "05":
+            continue
+        if int(key[2:5]) > 12:
+            continue
+        else:
+            total_files += 1
+
 def set_outputs():
     for key, value in commands.iteritems():
         if value[1] == None:
@@ -76,6 +88,12 @@ def run_batch_newclan(commands):
                     processed.write(key+":\tcommand: {}\n".format(abbrev_command))
                     files_processed_count += 1
 
+def export_command_set():
+    with open("commands.txt", "w") as file:
+        for key, values in commands.iteritems():
+            abbrev_values = [os.path.split(value)[1] for value in values if value is not None]
+            file.write("{}:  {}\n".format(key, abbrev_values))
+
 if __name__ == "__main__":
 
     # fill the command dictionary with all the subject_visit keys
@@ -90,7 +108,13 @@ if __name__ == "__main__":
     for root, dirs, files in os.walk("/Volumes/seedlings/Subject_Files"):
 
         if os.path.split(root)[1] == "Audio_Annotation":
-            for file in files:
+            cex_files = [file for file in files if ".cex" in file and not file.startswith(".")]
+            print cex_files
+            for file in cex_files:
+                # case where "final" is missing from filename and
+                # it's the only .cex file in Audio_Annotations
+                if (len(cex_files) == 1) and ".cex" in file:
+                    commands[file[0:5]][1] = os.path.join(root, file)
                 if "consensus_final" in file and not file.startswith(".") and ".cex" in file:
                     commands[file[0:5]][1] = os.path.join(root, file)
                     continue
@@ -118,6 +142,7 @@ if __name__ == "__main__":
 
     print "done with directory scan....\n"
     set_outputs()
+    export_command_set()
     print "done setting outputs....\n\n"
 
     print "running batch newclan.py on available files....\n\n"
