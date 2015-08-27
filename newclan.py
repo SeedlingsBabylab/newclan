@@ -102,7 +102,7 @@ class ClanFile:
                         continue
 
                     line = last_line + multi_line + line
-                    print line
+                    #print line
 
                 # if there are "word &=d_y_BRO" entries within the line, parse them out
                 entries = re.findall(self.entry_regx, line)
@@ -224,9 +224,9 @@ class ClanFile:
 
                         # special case where single interval in .cex is broken
                         # across multiple intervals in .cha
-                        if (prev_interval[1] == words[0][4] and
-                            curr_interval[0] == words[0][5]):
-                            print "found broken interval: " + str(curr_interval)
+                        # if (prev_interval[1] == words[0][4] and
+                        #     curr_interval[0] == words[0][5]):
+                        #     #print "found broken interval: " + str(curr_interval)
 
                         if (self.intervals_match(prev_interval, curr_interval, words)):
 
@@ -301,9 +301,9 @@ class ClanFile:
 
                             # special case where single interval in .cex is broken
                             # across multiple intervals in .cha
-                            if (prev_interval[1] == words[0][4] and
-                                curr_interval[0] == words[0][5]):
-                                print "found broken interval: " + str(curr_interval)
+                            # if (prev_interval[1] == words[0][4] and
+                            #     curr_interval[0] == words[0][5]):
+                            #     #print "found broken interval: " + str(curr_interval)
 
                             if (self.intervals_match(prev_interval, curr_interval, words)):
 
@@ -333,9 +333,9 @@ class ClanFile:
                                 output.write(line)
 
 
-        print "\n\n# of comments written: " + str(comment_written_cnt)
-        print "total # of comments: " + str(len(self.comments))
-        print "# of words parsed: " + str(len(self.words))
+        # print "\n\n# of comments written: " + str(comment_written_cnt)
+        # print "total # of comments: " + str(len(self.comments))
+        # print "# of words parsed: " + str(len(self.words))
 
     def check_words(self):
         """
@@ -581,7 +581,7 @@ def compare_intervals(id, orig_cex_intervals, annot_cex_intervals):
             # check for off by one
             for interv in off_by_ones:
                 if interv in annot_cex_intervals:
-                    print "found off by one: " + str(interv)
+                    #print "found off by one: " + str(interv)
                     off_by_one = True
                     off_by_one_count += 1
 
@@ -589,13 +589,13 @@ def compare_intervals(id, orig_cex_intervals, annot_cex_intervals):
                 if interv in annot_cex_intervals:
                     off_by_15 = True
                     off_by_15_count += 1
-                    print "found off by 15:  {}".format(interv)
+                    #print "found off by 15:  {}".format(interv)
 
             for interv in off_by_25s:
                 if interv in annot_cex_intervals:
                     off_by_25 = True
                     off_by_25_count += 1
-                    print "found off by 25:  {}".format(interv)
+                    #print "found off by 25:  {}".format(interv)
 
             # check for rewritten timestamp because of silence/subregion comment
             if interval[0] in [intrv[0] for intrv in adjusted_timestamps]:
@@ -608,14 +608,14 @@ def compare_intervals(id, orig_cex_intervals, annot_cex_intervals):
                 problems.append(interval)
 
     if len(problems) > 0:
-        print "\nThere were some discrepancies between the original cex file"
-        print "and the annotated version. The intervals in the annotated"
-        print "version might have been altered."
-
-        print "\n# off by ones: " + str(off_by_one_count)
-        print "\n# off by 25: " + str(off_by_25_count)
-        print "# otherwise inconsistent intervals: " + str(len(problems))
-        print "\nproblem intervals: " + str(problems)
+        # print "\nThere were some discrepancies between the original cex file"
+        # print "and the annotated version. The intervals in the annotated"
+        # print "version might have been altered."
+        #
+        # print "\n# off by ones: " + str(off_by_one_count)
+        # print "\n# off by 25: " + str(off_by_25_count)
+        # print "# otherwise inconsistent intervals: " + str(len(problems))
+        # print "\nproblem intervals: " + str(problems)
 
         with open("error_files/"+ id +"_errors.txt", "w") as error_file:
             for problem_interval in problems:
