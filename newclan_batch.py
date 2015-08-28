@@ -128,7 +128,7 @@ def compare_visit_log_and_outputs():
         if visit not in found_cha:
             problem_files.append(visit)
 
-    print problem_files
+    print "problem files: (both .cex and .cha are missing from usual places)\n\n" + "\n".join([element for element in problem_files])
 
 def visit_to_index(visit):
     if visit == '06':
