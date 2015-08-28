@@ -165,7 +165,7 @@ if __name__ == "__main__":
     # required by newclan.py)
 
     read_visit_log()
-    compare_visit_log_and_outputs()
+
     print "Building command set...\n"
     build_command_set()
 
@@ -195,8 +195,6 @@ if __name__ == "__main__":
                 if "_final" in file and not file.startswith(".") and ".cex" in file:
                     commands[file[0:5]][1] = os.path.join(root, file)
 
-
-
         if os.path.split(root)[1] == "Audio_Files":
             for file in files:
                 if "silences_added" in file and not file.startswith("."):
@@ -213,6 +211,7 @@ if __name__ == "__main__":
                     commands[file[0:5]][2] = os.path.join(root, file)
 
 
+
     print "done with directory scan....\n"
     set_outputs()
     export_command_set()
@@ -221,6 +220,8 @@ if __name__ == "__main__":
     print "running batch newclan.py on available files....\n\n"
 
     run_batch_newclan(commands)
+
+    compare_visit_log_and_outputs()
 
     print "Total # of clan files converted: {}".format(files_processed_count)
 
