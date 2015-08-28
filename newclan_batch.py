@@ -20,8 +20,18 @@ files_processed_count = 0
 
 total_files = 0
 
+visit_log_path = "/Volumes/seedlings/Subject_Info_and_Paperwork/subject_visit_dates_forAndrei.csv"
+
+visit_log = {}  # key   = subject
+                # value = visit
+
+not_processed = []
+
+found_cha = []  # key   = subject
+                # value = file
+
 def build_command_set():
-    for i in range(1,50):
+    for i in range(1,47):
         if i < 10:
             commands["0{}_06".format(i)] = [None] * 4
             commands["0{}_07".format(i)] = [None] * 4
@@ -94,22 +104,83 @@ def export_command_set():
             abbrev_values = [os.path.split(value)[1] for value in values if value is not None]
             file.write("{}:  {}\n".format(key, abbrev_values))
 
+def read_visit_log():
+    with open(visit_log_path, "rU") as file:
+        reader = csv.reader(file)
+        next(reader)
+        for row in reader:
+            visit_log[int(row[0])] = row[1:]
+
+
+def compare_visit_log_and_outputs():
+    temp = []
+    with open("not_batch_processed.txt") as file:
+        for line in file:
+            if int(line.strip()[0:2]) < 46:
+                not_processed.append(line.strip())
+
+
+    for visit in not_processed:
+        if visit_log[int(visit[0:2])][visit_to_index(visit[3:])] is not '':
+            temp.append(visit)
+
+    for visit in temp:
+        if visit not in found_cha:
+            problem_files.append(visit)
+
+    print problem_files
+
+def visit_to_index(visit):
+    if visit == '06':
+        return 0
+    elif visit == '07':
+        return 1
+    elif visit == '08':
+        return 2
+    elif visit == '09':
+        return 3
+    elif visit == '10':
+        return 4
+    elif visit == '11':
+        return 5
+    elif visit == '12':
+        return 6
+    elif visit == '13':
+        return 7
+    elif visit == '14':
+        return 8
+    elif visit == '15':
+        return 9
+    elif visit == '16':
+        return 10
+    elif visit == '17':
+        return 11
+    elif visit == '18':
+        return 12
+
 if __name__ == "__main__":
 
     # fill the command dictionary with all the subject_visit keys
     # and reserve a 4 item list as its value (for the 4 arguments
     # required by newclan.py)
 
+    read_visit_log()
+    compare_visit_log_and_outputs()
     print "Building command set...\n"
     build_command_set()
+
 
     print "Traversing Subject_Files for files...\n\n"
 
     for root, dirs, files in os.walk("/Volumes/seedlings/Subject_Files"):
 
         if os.path.split(root)[1] == "Audio_Annotation":
+            for file in files:
+                if ".cha" in file:
+                    found_cha.append(file[0:5])
+
             cex_files = [file for file in files if ".cex" in file and not file.startswith(".")]
-            print cex_files
+            #print cex_files
             for file in cex_files:
                 # case where "final" is missing from filename and
                 # it's the only .cex file in Audio_Annotations
@@ -123,6 +194,8 @@ if __name__ == "__main__":
                     continue
                 if "_final" in file and not file.startswith(".") and ".cex" in file:
                     commands[file[0:5]][1] = os.path.join(root, file)
+
+
 
         if os.path.split(root)[1] == "Audio_Files":
             for file in files:
