@@ -134,7 +134,8 @@ def compare_visit_log_and_outputs():
         for element in problem_files:
             problem_files_out.write("{}\n".format(element))
 
-
+    print "A list of problem files has been written to problem_files.csv"
+    print "These files never made it to the conversion step.\n\n"
 
 def visit_to_index(visit):
     if visit == '06':
