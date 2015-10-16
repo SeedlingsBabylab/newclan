@@ -60,6 +60,8 @@ class ClanFile:
         prev_interval = [None, None]
         curr_interval = [None, None]
 
+        lastline_comment = False
+
         with open(self.path, "rU") as clan_file:
             for index, line in enumerate(clan_file):
 
@@ -76,6 +78,7 @@ class ClanFile:
                     if interval_reg_result is None:
                         #print "interval regex was none, clan line: " + str(index)
                         last_line = line
+                        lastline_comment = False
                         continue
 
                     # rearrange previous and current intervals
@@ -92,6 +95,12 @@ class ClanFile:
                 if line.startswith("\t"):
                     # parse out the line interval
                     interval_reg_result = self.interval_regx.search(line)
+
+                    if lastline_comment:
+                        self.comments[-1] = (self.comments[-1][0] + line,
+                                             self.comments[-1][1],
+                                             self.comments[-1][2])
+                        continue
 
                     # if the line starts with a "\t" and there is no
                     # interval on the line (regex search returned None),
@@ -117,9 +126,11 @@ class ClanFile:
                                            curr_interval[0],    # onset
                                            curr_interval[1]])   # offset
 
+                    lastline_comment = False
 
                 if line.startswith("%com:") and ("|" not in line):
                     self.comments.append((line, curr_interval[0], curr_interval[1]))
+                    lastline_comment = True
 
         self.grouped_words = self.chunk_words(self.words)
         self.check_words()
