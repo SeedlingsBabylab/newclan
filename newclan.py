@@ -302,7 +302,8 @@ class ClanFile:
                                     curr_interval[1] = curr_comment[2]
                                     sil_subr_comment = curr_comment[0].replace("%com", "%xcom")
                                     silsubr_comment_ready = True
-                                    curr_comment = comments.popleft()
+                                    if comments:
+                                        curr_comment = comments.popleft()
 
                                 else:
                                     regular_comment = curr_comment[0].replace("%com", "%xcom")
